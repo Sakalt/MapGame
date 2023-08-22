@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2108CQB6ZX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-2108CQB6ZX');
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>日本地図ゲーム | 無料WEBアプリ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="都道府県の地図画像が表示されるので、その都道府県の県庁所在地をあてるゲームです。都道府県と県庁所在地の場所が覚えているか確認することができます。スマホ、タブレット、パソコンに対応していて無料でプレイできるWEBアプリです。">
+    <!--ファビコン-->
+    <link rel="shortcut icon" href="images/favicon.svg">
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#0986f7">
+    <link rel="stylesheet" href="css/JMG_style.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
+    <script src="js/JMG_program.js"></script>
+    <!--アラート(swalアラート)-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <!--JavaScriptアニメーション(anime.js)-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <!--矢印など(fontawesome)-->
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <!--効果音等-->
+    <audio id="start" preload="auto">
+    <source src="Material/start.mp3" type="audio/mp3">
+</audio>
+    <audio id="correct" preload="auto">
+    <source src="Material/correct.mp3" type="audio/mp3">
+</audio>
+    <audio id="incorrect" preload="auto">
+    <source src="Material/incorrect.mp3" type="audio/mp3">
+</audio>
+    <!--タイトル-->
+    <meta name="twitter:title" content="日本地図ゲーム | 無料WEBアプリ" />
+    <!--概要-->
+    <meta name="twitter:description" content="都道府県の地図画像が表示されるので、その都道府県の県庁所在地をあてるゲームです。都道府県と県庁所在地の場所が覚えているか確認することができます。スマホ、タブレット、パソコンに対応していて無料でプレイできるWEBアプリです。" />
+    <meta name="twitter:image" content="WMG/images/TwitterCard.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+</head>
+
+
+
+<body onload="firstscript()">
+    <div id="container">
+
+        <div id="contents">
+
+            <div id="main">
+
+                <span id="pagetop"></span>
+
+                <!--ロード画面のjquery-->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                <script>
+                    $(function() {
+                        var h = $(window).height();
+
+                        $('#wrap').css('display', 'none');
+                        $('#loader-bg ,#loader').height(h).css('display', 'block');
+                    });
+
+                    $(window).load(function() { //全ての読み込みが完了したら実行
+                        $('#loader-bg').delay(900).fadeOut(800);
+                        $('#loader').delay(600).fadeOut(300);
+                        $('#wrap').css('display', 'block');
+                    });
+
+                    //10秒たったら強制的にロード画面を非表示
+                    $(function() {
+                        setTimeout('stopload()', 10000);
+                    });
+
+                    function stopload() {
+                        $('#wrap').css('display', 'block');
+                        $('#loader-bg').delay(900).fadeOut(800);
+                        $('#loader').delay(600).fadeOut(300);
+                    }
+                </script>
+
+                <!--ロード画面-->
+                <div id="loader-bg">
+                    <div id="loader">
+                        <div class="loader">Loading...</div>
+                    </div>
+                </div>
+
+                <!--ページタイトル-->
+                <img src="images/title.svg" style="margin: 0 0 10px 0;" alt="日本地図ゲーム(タイトル)" class="logo">
+
+                <!--画像-->
+                <p id="startdisplay">
+                    <img src="images/STARTdisplay.svg" onclick="setsstart()" alt="ゲームスタート！" style="cursor: pointer;">
+                </p>
+
+                <div id="svg_border">
+                    <div class="square" id="elem">
+                    </div>
+                </div>
+
+                <div id="answerUI">
+                    <h1 id="correct_answer_interface" style="color: #fff;">前の問題<i class="fas fa-angle-double-right"></i>正解</h1>
+                    <h1 id="incorrect_answer_interface" style="color: #fff;">前の問題<i class="fas fa-angle-double-right"></i>不正解 （<span id="edit_area_incorrect"></span>）</h1>
+                    <h1 id="do_not_know_interface" style="color: #fff;">前の問題の答え<i class="fas fa-angle-double-right"></i><span id="edit_area_blank"></span></h1>
+                </div>
+
+                <div id="control_panel">
+                    <h1><b>赤く示された国の名前を答えなさい</b>
+                        <div class="mgr-1rem"></div><span id="edit_area_remaining_question_number" style="color:#000; display: inline-block;"></span></h1>
+                    <h1 style="text-decoration:underline solid red;" id="attention2letters"><b>※2文字で答えなさい</b></h1>
+                    <h1 style="text-decoration:underline solid red;" id="attention3letters"><b>※3文字で答えなさい</b></h1>
+                    <h1 style="text-decoration:underline solid red;" id="attention4letters"><b>※4文字で答えなさい</b></h1>
+
+                    <!--↓autocomplete="off"はフォームの自動補完を解除-->
+                    <input type="text" name="cnc" id="country_name_input_field" placeholder="国名" onkeydown="keydown_enter();" autocomplete="off">
+                    <button onclick="answer_button_click()" id="bc" class="btn answer_button"><div class="btn--letter">回答</div></button>
+                    <button onclick="do_not_know_button()" id="dk_btn" class="btn do_not_know_button"><div class="btn--letter">わからない</div></button>
+                    <!--↓上下中央揃え-->
+                    <div class="sound_effect_button--center">
+                        <input type="checkbox" id="sound_effect_button" name="checkbox01">
+                        <label for="sound_effect_button" class="checkbox01">効果音</label>
+                    </div>
+                </div>
+
+                <div id="result">
+                    <div class="result">
+
+                        <div class="result2 box-big1" style="-webkit-overflow-scrolling: touch;">
+                            <h1 class="title" id="result3">不正解・わからなかった問題</h1>
+                            <h1 id="edit_area_Incorrect_Array"></h1>
+                        </div>
+
+                        <div class="result2 box-big2">
+                            <h1 class="title" id="result4">スコア</h1>
+                            <h1 id="edit_area_score"></h1>
+                        </div>
+
+                        <div class="result2 box-big3">
+                            <h1 class="title" id="result5">ランク</h1>
+                            <h1 id="edit_area_rank"></h1>
+                        </div>
+
+                        <div class="result2 box-big4">
+                            <h1 class="title" id="result6">正答率</h1>
+                            <h1 id="edit_area_correct_answer_rate"></h1>
+                        </div>
+
+                        <div class="result2 box-big5">
+                            <h1 class="title" id="result7">正解数</h1>
+                            <h1 id="edit_area_correct_answer_number"></h1>
+                        </div>
+
+                        <div class="result2 box-big6">
+                            <h1 class="title" id="result8">不正解数</h1>
+                            <h1 id="edit_area_incorrect_answer_number"></h1>
+                        </div>
+
+                        <div class="result2 box-big7">
+                            <h1 class="title" id="result9">わからなかった問題数</h1>
+                            <h1 id="edit_area_do_not_know_answer_number"></h1>
+                        </div>
+                    </div>
+
+                    <h1 id="edit_area_comment" style="margin: 10px 0px 3px 0px; text-align: center; background-color: #fff; border: solid 1px #808080; color: #121212; letter-spacing: 0.1em;"></h1>
+
+                    <div>
+                        <button onclick="setsstart()" class="btn test3"><b>もう一回やる</b></button>
+                    </div>
+
+                    <h1 class="title">答え</h1>
+                    <h1>画像をクリックすると拡大表示できます</h1>
+                    <a href="images/answer_for_world_map_memorization.svg" style="color: #F4F5F7;" target="_blank">
+                        <img src="images/answer_for_world_map_memorization.svg" alt="日本地図" class="border">
+                    </a>
+
+                    <div style="text-align: right;">
+                        <button onclick="location.href='images/answer_for_world_map_printing.pdf'" class="btn test4">
+<img src="images/PDFicon.svg" style="width: 1.7em; margin-right: 5px;" alt="日本地図の印刷用PDF">
+上の日本地図を印刷
+</button>
+                    </div>
+
+                    <h1 class="title">ランク早見表</h1>
+                    <table id="rank">
+                        <tr>
+                            <td>ランク</td>
+                            <td>PERFECT</td>
+                            <td>S+</td>
+                            <td>S</td>
+                            <td>S-</td>
+                            <td>A+</td>
+                            <td>A</td>
+                            <td>A-</td>
+                            <td>B+</td>
+                            <td>B</td>
+                            <td>B-</td>
+                            <td>C+</td>
+                            <td>C</td>
+                            <td>C-</td>
+                            <td>D+</td>
+                            <td>D</td>
+                            <td>D-</td>
+                        </tr>
+                        <tr>
+                            <td>スコア</td>
+                            <td>100</td>
+                            <td>99～98</td>
+                            <td>97～91</td>
+                            <td>90～84</td>
+                            <td>83～77</td>
+                            <td>76～70</td>
+                            <td>69～63</td>
+                            <td>62～56</td>
+                            <td>55～49</td>
+                            <td>48～42</td>
+                            <td>41～35</td>
+                            <td>34～28</td>
+                            <td>27～21</td>
+                            <td>20～14</td>
+                            <td>13～7</td>
+                            <td>6～0</td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                </div>
+
+                <hr noshade>
+                <!--
+<h1 class="title">使い方</h1>
+
+<ul class="ul__bingkai">
+<li>1. スタート画像をクリックする</li>
+<li>2. 地図中の赤色で塗りつぶされた国の名前を入力欄に入力する</li>
+<li>3. 《回答ボタン》または《エンターキー》を押して答え合わせをする</li>
+<li style="margin-top: 0.2em;">※入力欄が空欄で《回答ボタン》または《エンターキー》を押すと《わからないボタン》を押したことになります</li>
+</ul>
+-->
+
+                <button type="button" onclick="country_list()" id="country_list_button" class="btn"><i id="country_list_arrow" class="fas fa-chevron-down"></i>出題国リスト</button>
+
+                <div id="country">
+                    <h1 style="margin-left: 0.5em; line-height: 1em;">問題を解いている間は表示できません</h1>
+                </div>
+                <div id="countrylist">
+                    <a href="images/answer_for_world_map_memorization.svg" style="color: #F4F5F7;" target="_blank">
+                        <img src="images/answer_for_world_map_memorization.svg" alt="日本地図" class="border">
+                    </a>
+
+                    <table style="margin-top: 1rem;">
+                        <tr class="CL--tr">
+                            <td class="C-asia" rowspan="17">アジア</td>
+                            <td class="C-asia">イラク</td>
+                            <td class="C-europe" rowspan="5">ヨーロッパ</td>
+                            <td class="C-europe">フィンランド</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">イラン</td>
+                            <td class="C-europe">フランス</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">インド</td>
+                            <td class="C-europe">ポーランド</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">インドネシア</td>
+                            <td class="C-europe">ポルトガル</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">カザフスタン</td>
+                            <td class="C-europe">ロシア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">サウジアラビア</td>
+                            <td class="C-africa" rowspan="10">アフリカ</td>
+                            <td class="C-africa">エジプト</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">シンガポール</td>
+                            <td class="C-africa">エチオピア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">タイ</td>
+                            <td class="C-africa">ガーナ</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">トルコ</td>
+                            <td class="C-africa">ケニア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">フィリピン</td>
+                            <td class="C-africa">コートジボワール</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">マレーシア</td>
+                            <td class="C-africa">タンザニア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">ミャンマー</td>
+                            <td class="C-africa">ナイジェリア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">モンゴル</td>
+                            <td class="C-africa">モロッコ</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">韓国</td>
+                            <td class="C-africa">リビア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">中国</td>
+                            <td class="C-africa">南アフリカ共和国</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">北朝鮮</td>
+                            <td class="C-NA" rowspan="3">北アメリカ</td>
+                            <td class="C-NA">アメリカ</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-asia">日本</td>
+                            <td class="C-NA">カナダ</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe" rowspan="8">ヨーロッパ</td>
+                            <td class="C-europe">イギリス</td>
+                            <td class="C-NA">メキシコ</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">イタリア</td>
+                            <td class="C-SA" rowspan="5">南アメリカ</td>
+                            <td class="C-SA">アルゼンチン</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">ウクライナ</td>
+                            <td class="C-SA">コロンビア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">スイス</td>
+                            <td class="C-SA">チリ</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">スウェーデン</td>
+                            <td class="C-SA">ブラジル</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">スペイン</td>
+                            <td class="C-SA">ペルー</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">ドイツ</td>
+                            <td class="C-oceania" rowspan="2">オセアニア</td>
+                            <td class="C-oceania">オーストラリア</td>
+                        </tr>
+                        <tr class="CL--tr">
+                            <td class="C-europe">ノルウェー</td>
+                            <td class="C-oceania">ニュージーランド</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h1>地図画像：<a href="http://www.vectorworldmap.com/" target="_blank">http://www.vectorworldmap.com/</a></h1>
+                <h1>効果音：<a href="https://otologic.jp/" target="_blank">https://otologic.jp/</a></h1>
+
+                <hr noshade>
+
+                <h1 class="title">更新情報</h1>
+                <div class="box_srcollbar">
+                    <!--<span class="mgr-1rem" style="color:#000">2021/06/01</span>ver.1.0.1<div class="mgr-1rem"></div>現状最新<br>-->
+                    <span class="mgr-1rem" style="color:#000">2021/05/03</span>ver.1.0.0
+                    <div class="mgr-1rem"></div>本サイト公開・現状最新
+                </div>
+
+                <div id="copy">Copyright&copy; Raptor All Rights Reserved.</div>
+                <!--↓内容-->
+            </div>
+
+        </div>
+        <!--/#main-->
+    </div>
+    <!--/#contents-->
+    </div>
+    <!--/#container-->
+</body>
+
+</html>
