@@ -215,13 +215,12 @@ to create this map.
                             <div class="setting_label">問題数</div>
                             <div class="question_number_form">
                                 <input type="radio" name="question_number_slider" value="10" id="apple"><label class="selection_label" for="apple">10問</label>
-                                <input type="radio" name="question_number_slider" value="30" id="pineapple"><label class="selection_label" for="pineapple">30問</label>
                                 <input type="radio" name="question_number_slider" value="47" id="orange" checked><label class="selection_label" for="orange">47問</label>
                             </div>
                             <div class="setting_label">難易度</div>
                             <div class="answer_method_form">
-                                <input type="radio" name="answer_method" value="selection" id="answer_method_selection" checked><label class="answer_method_button selection_label" for="answer_method_selection">優しい(選択して回答)</label>
-                                <input type="radio" name="answer_method" value="description" id="answer_method_duration"><label class="answer_method_button selection_label" for="answer_method_description">難しい(記述して回答)</label>
+                                <input type="radio" name="answer_method" value="selection" id="answer_method_selection" checked><label class="answer_method_button selection_label" for="answer_method_selection">優しい<br>(選択して回答)</label>
+                                <input type="radio" name="answer_method" value="description" id="answer_method_description"><label class="answer_method_button selection_label" for="answer_method_description">難しい<br>(記述して回答)</label>
                             </div>
                             <button onclick="setsstart()" id="button_start" class="btn">スタート</button>
                         </div>
@@ -256,7 +255,7 @@ to create this map.
                             <div class="result">
 
                                 <div class="result2 box-big1" style="-webkit-overflow-scrolling: touch;">
-                                    <h1 class="title" id="result3">不正解・わからなかった問題</h1>
+                                    <h1 class="title" id="result3">不正解リスト</h1>
                                     <h1 id="edit_area_Incorrect_Array"></h1>
                                 </div>
 
@@ -266,29 +265,32 @@ to create this map.
                                     <h1 id="edit_area_score"></h1>
                                 </div>
                                 -->
-                                <div class="result2 box-big4">
-                                    <h1 class="title" id="result6">正答率</h1>
-                                    <h1 id="edit_area_correct_answer_rate"></h1>
+                                <div class="result3" id="correct_answer_rate">
+                                    <div class="title" id="result6">正答率</div>
+                                    <div class="result_value" id="edit_area_correct_answer_rate"></div>
                                 </div>
 
-                                <div class="result2 box-big5">
-                                    <h1 class="title" id="result7">正解数</h1>
-                                    <h1 id="edit_area_correct_answer_number"></h1>
+                                <div class="result3" id="correct_answer_number">
+                                    <div class="title" id="result7">正解数</div>
+                                    <div class="result_value" id="edit_area_correct_answer_number"></div>
                                 </div>
 
-                                <div class="result2 box-big6">
-                                    <h1 class="title" id="result8">不正解数</h1>
-                                    <h1 id="edit_area_incorrect_answer_number"></h1>
+                                <div class="result3" id="inccorect_answer_number">
+                                    <div class="title" id="result8">不正解数</div>
+                                    <div class="result_value" id="edit_area_incorrect_answer_number"></div>
                                 </div>
 
-                                <div class="result2 box-big7">
-                                    <h1 class="title" id="result9">わからなかった問題数</h1>
-                                    <h1 id="edit_area_do_not_know_answer_number"></h1>
+                                <div class="result3" id="duration">
+                                    <div class="title" id="result9">所要時間</div>
+                                    <div class="result_value" id="edit_area_duration"></div>
                                 </div>
-                                <div class="result2 box-big8">
-                                    <h1 class="title" id="result9">所要時間</h1>
-                                    <h1 id="edit_area_description"></h1>
+
+                                <div class="result4" id="ranking">
+                                    <div id="ranking_letter">ランキング</div>
+                                    <div id="ranking_value_letter_1">上位:<span id="edit_area_rank_percent">12%</span></div>
+                                    <div id="ranking_value_letter_2"><span id="edit_area_rank">12位</span><span id="edit_area_rank_population_parameter">(123人中)</span></div>
                                 </div>
+
                                 <div id="edit_area_comment"></div>
 
                                 <div id="button_next">

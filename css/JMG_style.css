@@ -482,6 +482,67 @@ hr {
     /*boxからはみ出した場合、スクロール*/
     height: 100%;
     grid-row: 1 / 6;
+    overflow-x: hidden;
+}
+
+.result3 {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 5rem auto;
+    background-color: #585858;
+    border-radius: 0.5rem;
+}
+
+div[class="title"] {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: rgb(37, 37, 37);
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+div[class="result_value"] {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.result4 {
+    background-color: #585858;
+    border-radius: 0.5rem;
+}
+
+#ranking_letter {
+    width: 100%;
+    text-align: center;
+    background-color: rgb(37, 37, 37);
+    color: #fff;
+    line-height: 2rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+#ranking_value_letter_1 {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#edit_area_rank_percent {
+    font-size: 1.5rem;
+    font-weight: 900;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+#ranking_value_letter_2 {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 #edit_area_comment {
@@ -886,12 +947,20 @@ div.hid {
         /*gridからblockにして、1列表示にする*/
     }
     .box-big1 {
-        max-height: calc(100svh - 30rem);
+        /* max-height: calc(100svh - 30rem); */
+        grid-row: 1/2;
     }
-    .result2 {
-        margin: 1rem 0;
+    .result3,
+    .result4,
+    #edit_area_comment {
+        margin: 0.5rem 0;
     }
-    #button_next {
+    #ranking_value_letter_1,
+    #ranking_value_letter_2 {
+        width: auto;
+        padding: 0 0 0 1rem;
+    }
+    /* #button_next {
         margin-top: 1rem;
-    }
+    } */
 }

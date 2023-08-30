@@ -228,7 +228,7 @@ function start() {
 
         //所要時間を求める
         let duration_raw = Date.now() - start_time;
-        duration = Math.floor(duration_raw / 60000) + "分" + Math.floor(duration_raw % 60000) + "秒";
+        duration = Math.floor(duration_raw / 60000) + "分" + Math.floor((duration_raw % 60000)) / 1000 + "秒";
         //↓コメントを求める
         if (correct_answer_rate == 100) {
             comment = "やったね！ミスゼロおめでとう！";
@@ -249,24 +249,22 @@ function start() {
         }
         //↓画像の下の前の問題の答え
         answerUI.style.display = "block";
-        //↓正答率を求める
-        //↓各edit_areaに各変数を挿入
         //↓不正解・わからない問題の答え
         document.getElementById("edit_area_Incorrect_Array").innerHTML = incorrect_answer_country;
         //↓スコア
         //document.getElementById("edit_area_score").innerHTML = score;
         //↓正答率
-        document.getElementById("edit_area_correct_answer_rate").innerHTML = correct_answer_rate + "%";
+        document.getElementById("edit_area_correct_answer_rate").innerText = correct_answer_rate + "%";
         //↓正解数
-        document.getElementById("edit_area_correct_answer_number").innerHTML = correct_answer_number;
+        document.getElementById("edit_area_correct_answer_number").innerText = correct_answer_number + "問";
         //↓不正解
-        document.getElementById("edit_area_incorrect_answer_number").innerHTML = incorrect_answer_number;
-        //わからない問題数
-        document.getElementById("edit_area_do_not_know_answer_number").innerHTML = do_not_know_answer_number;
+        document.getElementById("edit_area_incorrect_answer_number").innerText = incorrect_answer_number + do_not_know_answer_number + "問";
         //所要時間
         document.getElementById("edit_area_duration").innerText = duration;
+        //ランキング
+        // document.getElementById("ranking").innerText = "読み込み中";
         //コメント
-        document.getElementById("edit_area_comment").innerHTML = comment;
+        document.getElementById("edit_area_comment").innerText = comment;
         //↓結果発表画UIを表示
         result.style.display = "block";
         //↓国リストを表示してもよいようにする
@@ -278,17 +276,47 @@ function start() {
             "request_type": "set",
             "score": correct_answer_number,
             "question_number": question_number,
-            "duration": duration_raw
+            "duration": duration_raw,
+            "answer_method": answer_method
         };
 
         var postparam = {
             "method": "POST",
-            "mode": "no-cors",
             "Content-Type": "application/x-www-form-urlencoded",
+            "headers": {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
             "body": JSON.stringify(SendDATA)
         };
 
-        fetch(URL, postparam);
+        fetch(URL, postparam)
+            .then(response => response.json())
+            .then(data => {
+                data_json_ranking = [];
+                let temp_array = new Array();
+                for (let i = 1; i < data.content.length; i++) {
+                    if (data.content[i][2] == question_number && data.content[i][3] == answer_method) {
+                        temp_array = [];
+                        temp_array.score = data.content[i][1];
+                        temp_array.question_number = data.content[i][2];
+                        temp_array.answer_method = data.content[i][3];
+                        temp_array.duration = data.content[i][4];
+                        data_json_ranking.push(temp_array);
+                    }
+                }
+                //時間を基準に昇順
+                data_json_ranking.sort((a, b) => b.duration - a.duration);
+                //正答数を基準に昇順
+                data_json_ranking.sort((a, b) => b.score - a.score);
+                for (let i = 0; i < data_json_ranking.length; i++) {
+                    if (data_json_ranking[i].duration == duration_raw && data_json_ranking[i].score == correct_answer_number) {
+                        document.getElementById("edit_area_rank").innerText = i + 1 + "位";
+                        document.getElementById("edit_area_rank_percent").innerText = Math.floor((i + 1) * 10000 / data_json_ranking.length) / 100 + "%";
+                        document.getElementById("edit_area_rank_population_parameter").innerText = "(" + data_json_ranking.length + "人中)";
+                    }
+                }
+            });
     }
 }
 
