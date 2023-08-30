@@ -515,6 +515,14 @@ div[class="result_value"] {
     border-radius: 0.5rem;
 }
 
+#ranking_content {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 2rem);
+}
+
 #ranking_letter {
     width: 100%;
     text-align: center;
@@ -527,7 +535,6 @@ div[class="result_value"] {
 
 #ranking_value_letter_1 {
     display: inline-flex;
-    width: 100%;
     justify-content: center;
     align-items: center;
 }
@@ -535,12 +542,11 @@ div[class="result_value"] {
 #edit_area_rank_percent {
     font-size: 1.5rem;
     font-weight: 900;
-    padding: 0.5rem 0 0.5rem 0.5rem;
+    padding: 0.5rem;
 }
 
 #ranking_value_letter_2 {
     display: inline-flex;
-    width: 100%;
     justify-content: center;
     align-items: center;
 }
