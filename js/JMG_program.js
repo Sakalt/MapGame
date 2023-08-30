@@ -1,8 +1,10 @@
 //↓グローバル変数
 //↓国番号
 var country_code;
-//↓解答の国名
-var answer_country_name;
+//↓解答の国名 漢字
+let answer_kanji;
+//↓解答の
+let answer_kana
 //↓入力された国名
 var answer_field;
 //↓わからない・不正解問題の国名の配列
@@ -18,9 +20,55 @@ var nth_question;
 //↓国リストを表示してよいか(true/false)
 var country_list_display;
 
+//document.getElementById("japan_map_svg")
+let japan_map_svg;
+
+//data.jsonを連想配列に変換したもの
+let data_json = [];
+
+let japan_map_svg_fill = "#38b48b";
+
+//問題数
+let question_number = 47;
+
+let answer_method = "selection";
+
+let answer_array = ["北海道", "青森県", "秋田県"];
+
+//スタートボタンを押した時間
+let start_time;
+
 
 
 function firstscript() {
+    japan_map_svg = document.getElementById("japan_map_svg");
+
+    //jsonを読み込む
+    fetch('data/data.json')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            data_json = data;
+            // for (let i = 0; data_json[country_code].svg_id.length > i; i++) {
+            //     document.getElementById(data_json[country_code].svg_id[i]).style.fill = japan_map_svg_fill; //緑色にする
+            //     //#47e63dff
+            // }
+        });
+    for (let i = 0; i < document.querySelector("#japan_map_svg").children.length; i++) {
+        document.querySelector("#japan_map_svg").children[i].style.fill = japan_map_svg_fill; //緑色にする
+        document.querySelector("#japan_map_svg").children[i].style.stroke = "#000";
+        document.querySelector("#japan_map_svg").children[i].style.strokeWidth = "3";
+    }
+    document.querySelector("#japan_map_svg > path:nth-child(3)").style.fill = "";
+
+    document.querySelector("#japan_map_svg > path:nth-child(3)").style.stroke = "#fff";
+    document.querySelector("#japan_map_svg > path:nth-child(3)").style.strokeWidth = "3";
+    document.querySelector("#japan_map_svg > path:nth-child(4)").style.stroke = "#fff";
+    document.querySelector("#japan_map_svg > path:nth-child(4)").style.strokeWidth = "3";
+
+    //日本地図の向きを変える
+    //document.getElementById("japan_map_svg").setAttribute("transform", "rotate(30)");
+
     hidden();
 }
 
@@ -31,49 +79,63 @@ function hidden() {
     incorrect_answer_number = 0;
     do_not_know_answer_number = 0;
     country_list_display = true;
+
     //↓わからない・不正解問題の国名の配列
     incorrect_answer_country = [];
-    svg55.style.display ="none";
     //正解・不正解text
-    correct_answer_interface.style.display ="none";
-    incorrect_answer_interface.style.visibility ="hidden";
-    do_not_know_interface.style.display ="none";
+    correct_answer_interface.style.display = "none";
+    incorrect_answer_interface.style.visibility = "hidden";
+    do_not_know_interface.style.display = "none";
     //↓回答条件・テキストボックス・ボタン・効果音チェックボックスの非表示
-    document.getElementById("control_panel").style.display ="none";
+    document.getElementById("control_panel").style.display = "none";
     //↓画像の下の前の問題の答え
-    document.getElementById("answerUI").style.display ="none";
+    document.getElementById("answerUI").style.display = "none";
     //↓結果発表画UI
-    result.style.display ="none";
+    result.style.display = "none";
 }
 
 
 
 //↓1セット(50回)スタート
 function setsstart() {
+    start_time = Date.now();
     //↓各要素の非表示
     hidden();
+    document.getElementById("main").style.gridTemplateRows = "auto";
+    document.getElementById("logo").style.display = "none";
+    //設定UI
+    document.getElementById("setting").style.display = "none";
+
+    //問題数を取得
+    let elements = document.getElementsByName("question_number_slider");
+    for (let i = 0; i < elements.length; i++) {
+        if (elements.item(i).checked) {
+            question_number = Number(elements.item(i).value);
+        }
+    }
+
+    //回答方法
+    elements = document.getElementsByName("answer_method");
+    for (let i = 0; i < elements.length; i++) {
+        if (elements.item(i).checked) {
+            answer_method = elements.item(i).value;
+        }
+    }
+
     //↓問題番号の配列の生成
     var arr = [];
     numArr = [];
-    for(var i=0; i < 50; i++){
-        arr[i]=i+1;
+    for (var i = 0; i < question_number; i++) {
+        arr[i] = i + 1;
     }
-    for(var j = 0, len = arr.length; j < 50; j++, len--) {
-        rndNum = Math.floor(Math.random()*len);
+    for (var j = 0, len = arr.length; j < question_number; j++, len--) {
+        rndNum = Math.floor(Math.random() * len);
         numArr.push(arr[rndNum]);
-        arr[rndNum] = arr[len-1];
+        arr[rndNum] = arr[len - 1];
     }
     //↓ログに配列表示(開発用)
-    //console.log(numArr);
+    console.log(numArr);
     nth_question = 1;
-    //↓国リストを表示しないようにする
-    country_list_display = false;
-    //↓国リストを非表示に
-    if(countrylist.style.display=="block"){
-        countrylist.style.display ="none";
-        country.style.display ="block";
-        document.getElementById("country_listbutton").innerHTML = '<i class="fas fa-angle-up"></i>出題国リスト';
-    }
     swal_boot = false;
     const sound_effect_button = document.getElementById("sound_effect_button");
     start();
@@ -83,674 +145,116 @@ function setsstart() {
 
 //↓1問題スタート
 function start() {
-    svg55.style.display ="block";
-    if(nth_question <= 50) {
-        anime({
-            targets: elem,
-            translateY: 0,
-            translateX: 0,
-            scale: 1,
-            easing:"easeOutCubic"
-        })
+    japan_map_svg.style.display = "block";
+    if (nth_question <= question_number) {
         //↓テキストボックスの内容を削除
         document.getElementById("country_name_input_field").value = "";
-        //↓HTMLの書き換え(残り何問)
-        var remaining_question_number = 51 - nth_question;
-        document.getElementById("edit_area_remaining_question_number").innerHTML = "残り50問中" + remaining_question_number + "問";
+
         //↓変数country_codeに乱数が入っている配列の数値を代入
-        numArr_number = Number(nth_question) -1;
-        var country_code = numArr[numArr_number];
-        //↓answer_country_nameに答えを代入
-        if(country_code == 1){answer_country_name = "イギリス";}
-        if(country_code == 2){answer_country_name = "ポルトガル";}
-        if(country_code == 3){answer_country_name = "スペイン";}
-        if(country_code == 4){answer_country_name = "フランス";}
-        if(country_code == 5){answer_country_name = "ドイツ";}
-        if(country_code == 6){answer_country_name = "ポーランド";}
-        if(country_code == 7){answer_country_name = "イタリア";}
-        if(country_code == 8){answer_country_name = "スイス";}
-        if(country_code == 9){answer_country_name = "ノルウェー";}
-        if(country_code == 10){answer_country_name = "スウェーデン";}
-        if(country_code == 11){answer_country_name = "フィンランド";}
-        if(country_code == 12){answer_country_name = "ロシア";}
-        if(country_code == 13){answer_country_name = "ウクライナ";}
-        if(country_code == 14){answer_country_name = "トルコ";}
-        if(country_code == 15){answer_country_name = "エジプト";}
-        if(country_code == 16){answer_country_name = "リビア";}
-        if(country_code == 17){answer_country_name = "モロッコ";}
-        if(country_code == 18){answer_country_name = "コートジボワール";}
-        if(country_code == 19){answer_country_name = "ガーナ";}
-        if(country_code == 20){answer_country_name = "ナイジェリア";}
-        if(country_code == 21){answer_country_name = "エチオピア";}
-        if(country_code == 22){answer_country_name = "ケニア";}
-        if(country_code == 23){answer_country_name = "タンザニア";}
-        if(country_code == 24){answer_country_name = "南アフリカ共和国";}
-        if(country_code == 25){answer_country_name = "サウジアラビア";}
-        if(country_code == 26){answer_country_name = "イラク";}
-        if(country_code == 27){answer_country_name = "イラン";}
-        if(country_code == 28){answer_country_name = "カザフスタン";}
-        if(country_code == 29){answer_country_name = "インド";}
-        if(country_code == 30){answer_country_name = "ミャンマー";}
-        if(country_code == 31){answer_country_name = "タイ";}
-        if(country_code == 32){answer_country_name = "マレーシア";}
-        if(country_code == 33){answer_country_name = "シンガポール";}
-        if(country_code == 34){answer_country_name = "インドネシア";}
-        if(country_code == 35){answer_country_name = "フィリピン";}
-        if(country_code == 36){answer_country_name = "中国";}
-        if(country_code == 37){answer_country_name = "モンゴル";}
-        if(country_code == 38){answer_country_name = "北朝鮮";}
-        if(country_code == 39){answer_country_name = "韓国";}
-        if(country_code == 40){answer_country_name = "日本";}
-        if(country_code == 41){answer_country_name = "オーストラリア";}
-        if(country_code == 42){answer_country_name = "ニュージーランド";}
-        if(country_code == 43){answer_country_name = "カナダ";}
-        if(country_code == 44){answer_country_name = "アメリカ";}
-        if(country_code == 45){answer_country_name = "メキシコ";}
-        if(country_code == 46){answer_country_name = "コロンビア";}
-        if(country_code == 47){answer_country_name = "ペルー";}
-        if(country_code == 48){answer_country_name = "ブラジル";}
-        if(country_code == 49){answer_country_name = "アルゼンチン";}
-        if(country_code == 50){answer_country_name = "チリ";}
-        //alert("今入力して");
-        //↓答えをログに表示(開発用)
-        //console.log(answer_country_name);
+        numArr_number = Number(nth_question) - 1;
+        country_code = numArr[numArr_number];
+
+        if (answer_method == "selection") {
+            document.getElementById("bc").style.display = "none";
+            document.getElementById("country_name_input_field").style.display = "none";
+            document.getElementById("answer_button_0").style.display = "inline-flex";
+            document.getElementById("answer_button_1").style.display = "inline-flex";
+            document.getElementById("answer_button_2").style.display = "inline-flex";
+            //乱数生成 何番目のテキストボックスに何を代入するか
+            var arr = [0, 1, 2];
+            var a = arr.length;
+            //シャッフルアルゴリズム
+            while (a) {
+                var j = Math.floor(Math.random() * a);
+                var t = arr[--a];
+                arr[a] = arr[j];
+                arr[j] = t;
+            }
+            //選択肢が東京都 東京都 大阪負 とか重複して出されることがあるので、それを解消させる
+            answer_array[arr[0]] = data_json[Math.floor(Math.random() * 46)].prefectures_name;
+            answer_array[arr[1]] = data_json[Math.floor(Math.random() * 46)].prefectures_name;
+            answer_array[arr[2]] = data_json[country_code - 1].prefectures_name;
+            document.getElementById("answer_button_0").innerText = answer_array[0];
+            document.getElementById("answer_button_1").innerText = answer_array[1];
+            document.getElementById("answer_button_2").innerText = answer_array[2];
+            document.getElementById("answer_button_1").style.display = "inline-flex";
+            document.getElementById("answer_button_2").style.display = "inline-flex";
+        } else if (answer_method == "description") {
+            document.getElementById("bc").style.display = "inline-flex";
+            document.getElementById("country_name_input_field").style.display = "block";
+            document.getElementById("answer_button_0").style.display = "none";
+            document.getElementById("answer_button_1").style.display = "none";
+            document.getElementById("answer_button_2").style.display = "none";
+        } else {
+            console.error("エラー");
+        }
+
+        //↓HTMLの書き換え(残り何問)
+        var remaining_question_number = question_number + 1 - nth_question;
+        document.getElementById("edit_area_remaining_question_number").innerHTML = "残り" + question_number + "問中" + remaining_question_number + "問";
+
+
+        for (let i = 0; data_json[country_code - 1].svg_id.length > i; i++) {
+            document.getElementById(data_json[country_code - 1].svg_id[i]).style.fill = "#ff0000"; //緑色にする
+        }
+
+
         //↓テキストボックス関連のuiを表示
-        document.getElementById("control_panel").style.display ="block";
+        document.getElementById("control_panel").style.display = "block";
         //↓画像の下の前の問題の答えを表示
-        document.getElementById("answerUI").style.display ="block";
+        document.getElementById("answerUI").style.display = "block";
         //↓テキストボックスを選択状態にする
         document.getElementById("country_name_input_field").focus();
-        //↓ページトップに移動
-        scrollTo(0,0);
-        //非表示
-        startdisplay.style.display ="none";
-        if (country_code != 1) {document.getElementById("path144").style.fill ="#47e63dff";attention4letters.style.display="none";}
-        if (country_code != 2) {document.getElementById("path154").style.fill ="#47e63dff";}
-        if (country_code != 3) {document.getElementById("path152").style.fill ="#47e63dff";}
-        if (country_code != 4) {document.getElementById("path146").style.fill ="#47e63dff";}
-        if (country_code != 5) {document.getElementById("path128").style.fill ="#47e63dff";}
-        if (country_code != 6) {document.getElementById("path124").style.fill ="#47e63dff";}
-        if (country_code != 7) {document.getElementById("path150").style.fill ="#47e63dff";}
-        if (country_code != 8) {document.getElementById("path132").style.fill ="#47e63dff";}
-        if (country_code != 9) {document.getElementById("path82").style.fill ="#47e63dff";}
-        if (country_code != 10) {document.getElementById("path84").style.fill ="#47e63dff";}
-        if (country_code != 11) {document.getElementById("path86").style.fill ="#47e63dff";}
-        if (country_code != 12) {document.getElementById("path16").style.fill ="#47e63dff";attention3letters.style.display="none";}
-        if (country_code != 13) {document.getElementById("path96").style.fill ="#47e63dff";}
-        if (country_code != 14) {document.getElementById("path164").style.fill ="#47e63dff";}
-        if (country_code != 15) {document.getElementById("path202").style.fill ="#47e63dff";}
-        if (country_code != 16) {document.getElementById("path220").style.fill ="#47e63dff";}
-        if (country_code != 17) {document.getElementById("path226").style.fill ="#47e63dff";}
-        if (country_code != 18) {document.getElementById("path248").style.fill ="#47e63dff";}
-        if (country_code != 19) {document.getElementById("path250").style.fill ="#47e63dff";}
-        if (country_code != 20) {document.getElementById("path260").style.fill ="#47e63dff";}
-        if (country_code != 21) {document.getElementById("path206").style.fill ="#47e63dff";}
-        if (country_code != 22) {document.getElementById("path214").style.fill ="#47e63dff";}
-        if (country_code != 23) {document.getElementById("path276").style.fill ="#47e63dff";}
-        if (country_code != 24) {document.getElementById("path312").style.fill ="#47e63dff";}
-        if (country_code != 25) {document.getElementById("path184").style.fill ="#47e63dff";}
-        if (country_code != 26) {document.getElementById("path166").style.fill ="#47e63dff";}
-        if (country_code != 27) {document.getElementById("path160").style.fill ="#47e63dff";}
-        if (country_code != 28) {document.getElementById("path30").style.fill ="#47e63dff";}
-        if (country_code != 29) {document.getElementById("path66").style.fill ="#47e63dff";}
-        if (country_code != 30) {document.getElementById("path62").style.fill ="#47e63dff";}
-        if (country_code != 31) {document.getElementById("path60").style.fill ="#47e63dff";}
-        if (country_code != 32) {document.getElementById("path50").style.fill ="#47e63dff";}
-        if (country_code != 33) {document.getElementById("path1234").style.fill ="#47e63dff";}
-        if (country_code != 34) {document.getElementById("path46").style.fill ="#47e63dff";}
-        if (country_code != 35) {document.getElementById("path44").style.fill ="#47e63dff";}
-        if (country_code != 36) {document.getElementById("path18").style.fill ="#47e63dff";attention2letters.style.display="none";}
-        if (country_code != 37) {document.getElementById("path28").style.fill ="#47e63dff";}
-        if (country_code != 38) {document.getElementById("path26").style.fill ="#47e63dff";attention3letters.style.display="none";}
-        if (country_code != 39) {document.getElementById("path24").style.fill ="#47e63dff";attention2letters.style.display="none";}
-        if (country_code != 40) {document.getElementById("path22").style.fill ="#47e63dff";}
-        if (country_code != 41) {document.getElementById("path316").style.fill ="#47e63dff";}
-        if (country_code != 42) {document.getElementById("path318").style.fill ="#47e63dff";}
-        if (country_code != 43) {document.getElementById("path334").style.fill ="#47e63dff";}
-        if (country_code != 44) {document.getElementById("path348").style.fill ="#47e63dff";document.getElementById("path336").style.fill ="#47e63dff";attention4letters.style.display="none";}
-        if (country_code != 45) {document.getElementById("path366").style.fill ="#47e63dff";}
-        if (country_code != 46) {document.getElementById("path378").style.fill ="#47e63dff";}
-        if (country_code != 47) {document.getElementById("path382").style.fill ="#47e63dff";}
-        if (country_code != 48) {document.getElementById("path368").style.fill ="#47e63dff";}
-        if (country_code != 49) {document.getElementById("path390").style.fill ="#47e63dff";}
-        if (country_code != 50) {document.getElementById("path392").style.fill ="#47e63dff";}
+
         //地図画像の幅と高さを変数に代入
-        map_width = document.getElementById("svg55").clientWidth;
-        map_height = document.getElementById("svg55").clientHeight;
-        //基準値
-        base_x = 0.039419425;
-        base_y = 0.07;
-        if (country_code == 1) {
-            document.getElementById("path144").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*4.92,
-                translateX: map_width*base_x*-0.41,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-            attention4letters.style.display="block";
-        }
-        if (country_code == 2) {
-            document.getElementById("path154").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*2.01*2,
-                translateX: map_width*base_x*1.04*2,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 3) {
-            document.getElementById("path152").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*2.1,
-                translateX: map_width*base_x*0.34,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 4) {
-            document.getElementById("path146").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*3.18,
-                translateX: map_width*base_x*-0.29,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 5) {
-            document.getElementById("path128").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*4.07,
-                translateX: map_width*base_x*-1.26,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 6) {
-            document.getElementById("path124").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*4.23,
-                translateX: map_width*base_x*-2.35,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 7) {
-            document.getElementById("path150").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*2.43,
-                translateX: map_width*base_x*-1.6,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 8) {
-            document.getElementById("path132").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*3.28*2,
-                translateX: map_width*base_x*-1*2,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 9) {
-            document.getElementById("path82").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*7,
-                translateX: map_width*base_x*-1.91,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 10) {
-            document.getElementById("path84").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*6.44,
-                translateX: map_width*base_x*-1.98,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 11) {
-            document.getElementById("path86").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*7.07,
-                translateX: map_width*base_x*-2.89,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 12) {
-            document.getElementById("path16").style.fill ="#ff0000";
-            attention3letters.style.display="block";
-        }
-        if (country_code == 13) {
-            document.getElementById("path96").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*3.62,
-                translateX: map_width*base_x*-3.96,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 14) {
-            document.getElementById("path164").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*1.97,
-                translateX: map_width*base_x*-4.66,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 15) {
-            document.getElementById("path202").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: 0,
-                translateX: map_width*base_x*-4.23,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 16) {
-            document.getElementById("path220").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: 0,
-                translateX: map_width*base_x*-2.36,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 17) {
-            document.getElementById("path226").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*0.75,
-                translateX: map_width*base_x*0.94,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 18) {
-            document.getElementById("path248").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-2.78*2,
-                translateX: map_width*base_x*0.73*2,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 19) {
-            document.getElementById("path250").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-2.72*2,
-                translateX: map_width*base_x*0.13,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 20) {
-            document.getElementById("path260").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-2.57,
-                translateX: map_width*base_x*-1.23,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 21) {
-            document.getElementById("path206").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-2.53,
-                translateX: map_width*base_x*-5.68,//これミスってるから測定しなおし
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 22) {
-            document.getElementById("path214").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-3.78,
-                translateX: map_width*base_x*-5.3,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 23) {
-            document.getElementById("path276").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-4.79,
-                translateX: map_width*base_x*-4.87,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 24) {
-            document.getElementById("path312").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-7.98,
-                translateX: map_width*base_x*-3.33,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 25) {
-            document.getElementById("path184").style.fill ="#ff0000";
-        }
-        if (country_code == 26) {
-            document.getElementById("path166").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*1.03,
-                translateX: map_width*base_x*-5.93,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 27) {
-            document.getElementById("path160").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*0.95,
-                translateX: map_width*base_x*-7.29,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 28) {
-            document.getElementById("path30").style.fill ="#ff0000";
-        }
-        if (country_code == 29) {
-            document.getElementById("path66").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*0.81,
-                translateX: map_width*base_x*-11.44,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 30) {
-            document.getElementById("path62").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-1.05,
-                translateX: map_width*base_x*-13.44,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 31) {
-            document.getElementById("path60").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-1.96,
-                translateX: map_width*base_x*-14.19,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 32) {
-            document.getElementById("path50").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-3.31,
-                translateX: map_width*base_x*-15.43,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 33) {
-            document.getElementById("path1234").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-3.7*2,
-                translateX: map_width*base_x*-14.69*2,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 34) {
-            document.getElementById("path46").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-4.23,
-                translateX: map_width*base_x*-16.62,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 35) {
-            document.getElementById("path44").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-2.01,
-                translateX: map_width*base_x*-17.12,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 36) {
-            document.getElementById("path18").style.fill ="#ff0000";
-            attention2letters.style.display="block";
-        }
-        if (country_code == 37) {
-            document.getElementById("path28").style.fill ="#ff0000";
-        }
-        if (country_code == 38) {
-            document.getElementById("path26").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*2.79*2,
-                translateX: map_width*base_x*-17.05*2,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-            attention3letters.style.display="block";
-        }
-        if (country_code == 39) {
-            document.getElementById("path24").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*1.93*2,
-                translateX: map_width*base_x*-17.33*2,
-                scale: 4,
-                easing:"easeOutCubic"
-            })
-            attention2letters.style.display="block";
-        }
-        if (country_code == 40) {
-            document.getElementById("path22").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*1.91,
-                translateX: map_width*base_x*-18.3,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 41) {
-            document.getElementById("path316").style.fill ="#ff0000";
-        }
-        if (country_code == 42) {
-            document.getElementById("path318").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-11.95,
-                translateX: map_width*base_x*-22.83,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 43) {
-            document.getElementById("path334").style.fill ="#ff0000";
-        }
-        if (country_code == 44) {
-            document.getElementById("path348").style.fill ="#ff0000";
-            document.getElementById("path336").style.fill ="#ff0000";
-            attention4letters.style.display="block";}
-        if (country_code == 45) {
-            document.getElementById("path366").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*0.32,
-                translateX: map_width*base_x*13.95,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 46) {
-            document.getElementById("path378").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-3.27,
-                translateX: map_width*base_x*10.43,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 47) {
-            document.getElementById("path382").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-5.21,
-                translateX: map_width*base_x*10.43,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 48) {
-            document.getElementById("path368").style.fill ="#ff0000";
-        }
-        if (country_code == 49) {
-            document.getElementById("path390").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-9.98,
-                translateX: map_width*base_x*8.4,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-        if (country_code == 50) {
-            document.getElementById("path392").style.fill ="#ff0000";
-            anime({
-                targets: elem,
-                translateY: map_height*base_y*-9.74,
-                translateX: map_width*base_x*9.08,
-                scale: 2,
-                easing:"easeOutCubic"
-            })
-        }
-    }else{
+        map_width = japan_map_svg.clientWidth;
+        map_height = japan_map_svg.clientHeight;
+
+        //移動させてた
+    } else {
         //結果画面表示
-        svg55.style.display ="none";
+        japan_map_svg.style.display = "none";
         //↓テキストボックス関連
-        document.getElementById("control_panel").style.display ="none";
+        document.getElementById("control_panel").style.display = "none";
         //↓画像の下の前の問題の答え
-        document.getElementById("answerUI").style.display ="block";
+        document.getElementById("answerUI").style.display = "block";
         //↓わからない・不正解問題の国名の配列のカンマをなくす
-        incorrect_answer_country=( incorrect_answer_country.join("") );
+        incorrect_answer_country = (incorrect_answer_country.join(""));
         //↓スコアを求める
-        score = correct_answer_number * 2;
-        //↓ランク・コメントを求める
-        //50
-        if(correct_answer_number == 50) {
-            rank = "PERFECT!!!";
+        //score = correct_answer_number * 2;
+
+        //正答率を求める
+        correct_answer_rate = Math.floor((correct_answer_number / question_number) * 10) * 10;
+
+        //所要時間を求める
+        let duration_raw = Date.now() - start_time;
+        duration = Math.floor(duration_raw / 60000) + "分" + Math.floor(duration_raw % 60000) + "秒";
+        //↓コメントを求める
+        if (correct_answer_rate == 100) {
             comment = "やったね！ミスゼロおめでとう！";
-        //49
-        }else if (correct_answer_number >= 49) {
-            rank = "S+";
-            comment = "あと1問！";
-        //46/47/48
-        }else if (correct_answer_number >= 46) {
-            rank = "S";
+        } else if (correct_answer_rate >= 90) {
             comment = "あと一歩！";
-        //42/43/44/45
-        }else if (correct_answer_number >= 42) {
-            rank = "S-";
-            comment = "あと少しで満点！";
-        //39/41/42
-        }else if (correct_answer_number >= 39) {
-            rank = "A+";
-            comment = "あと少しで「S」";
-        //35/36/37/38
-        }else if (correct_answer_number >= 35) {
-            rank = "A";
+        } else if (correct_answer_rate >= 80) {
+            comment = "あと少し";
+        } else if (correct_answer_rate >= 70) {
             comment = "毎日、継続して暗記しましょう。";
-        //32/33/34
-        }else if (correct_answer_number >= 32) {
-            rank = "A-";
-            comment = "もう少し！";
-        //28/29/30/31
-        }else if (correct_answer_number >= 28) {
-            rank = "B+";
-            comment = "あと20個で満点！";
-        //25/26/27
-        }else if (correct_answer_number >= 25) {
-            rank = "B";
-            comment = "あと半分！！";
-        //21/22/23/24
-        }else if (correct_answer_number >= 21) {
-            rank = "B-";
+        } else if (correct_answer_rate >= 60) {
+            comment = "まだまだ伸びる";
+        } else if (correct_answer_rate >= 50) {
+            comment = "あと半分！";
+        } else if (correct_answer_rate >= 40) {
             comment = "頑張りましょう！";
-        //18/19/20
-        }else if (correct_answer_number >= 18) {
-            rank = "C+";
-            comment = "頑張りましょう！";
-        //14/15/16/17
-        }else if (correct_answer_number >= 14) {
-            rank = "C";
-            comment = "1日3つ継続して覚えよう！！";
-        //11/12/13
-        }else if (correct_answer_number >= 11) {
-            rank = "C-";
-            comment = "1日3つ継続して覚えよう！！";
-        //7/8/9/10
-        }else if (correct_answer_number >= 7) {
-            rank = "D+";
-            comment = "1日3つ継続して覚えよう！！";
-        //4/5/6
-        }else if (correct_answer_number >= 4) {
-            rank = "D";
-            comment = "1日3つ継続して覚えよう！！";
-        //1/2/3
-        }else{
-            rank = "D-";
+        } else {
             comment = "1日3つ継続して覚えよう！！";
         }
         //↓画像の下の前の問題の答え
-        answerUI.style.display ="block";
+        answerUI.style.display = "block";
         //↓正答率を求める
-        correct_answer_rate = correct_answer_number / 50 * 100;
         //↓各edit_areaに各変数を挿入
         //↓不正解・わからない問題の答え
         document.getElementById("edit_area_Incorrect_Array").innerHTML = incorrect_answer_country;
         //↓スコア
-        document.getElementById("edit_area_score").innerHTML = score;
-        //↓ランク
-        document.getElementById("edit_area_rank").innerHTML = rank;
+        //document.getElementById("edit_area_score").innerHTML = score;
         //↓正答率
         document.getElementById("edit_area_correct_answer_rate").innerHTML = correct_answer_rate + "%";
         //↓正解数
@@ -759,12 +263,32 @@ function start() {
         document.getElementById("edit_area_incorrect_answer_number").innerHTML = incorrect_answer_number;
         //わからない問題数
         document.getElementById("edit_area_do_not_know_answer_number").innerHTML = do_not_know_answer_number;
+        //所要時間
+        document.getElementById("edit_area_duration").innerText = duration;
         //コメント
         document.getElementById("edit_area_comment").innerHTML = comment;
         //↓結果発表画UIを表示
-        result.style.display ="block";
+        result.style.display = "block";
         //↓国リストを表示してもよいようにする
-        country_list_display = true;
+        //country_list_display = true;
+
+        var URL = "https://script.google.com/macros/s/AKfycbw2F219tLZSNwxRj38UJUiJSPnZF-S9dQD01lPeVFedXc2VvHSAKKOYcujAyd2bQiJkmQ/exec";
+
+        var SendDATA = {
+            "request_type": "set",
+            "score": correct_answer_number,
+            "question_number": question_number,
+            "duration": duration_raw
+        };
+
+        var postparam = {
+            "method": "POST",
+            "mode": "no-cors",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "body": JSON.stringify(SendDATA)
+        };
+
+        fetch(URL, postparam);
     }
 }
 
@@ -772,7 +296,7 @@ function start() {
 
 //《エンターキー》が押されたら
 function keydown_enter() {
-    if(window.event.keyCode == 13) {
+    if (window.event.keyCode == 13) {
         //↓《回答ボタン》をクリックした設定にする
         answer_button_click();
     }
@@ -781,75 +305,92 @@ function keydown_enter() {
 
 
 //↓《回答ボタン》が押されたら
-function answer_button_click(){
-    //↓変数answer_fieldにテキストボックスの内容を入れる
-    answer_field = document.getElementById("country_name_input_field").value;
-    //↓テキストボックスが空欄なら(変数answer_fieldを使っていないのはなんか上手くいかなかったため。)
-    if(document.getElementById("country_name_input_field").value == ""){
-        do_not_know_interface.style.display ="block";
-        correct_answer_interface.style.display ="none";
-        incorrect_answer_interface.style.display ="none";
+function answer_button_click(button_number) {
+    for (let i = 0; data_json[country_code - 1].svg_id.length > i; i++) {
+        document.getElementById(data_json[country_code - 1].svg_id[i]).style.fill = japan_map_svg_fill; //緑色にリセットする
+    }
+
+
+    if (answer_method == "selection") {
+        //↓変数answer_fieldにボタンのテキストを入れる
+        answer_field = document.getElementById("answer_button_" + button_number).innerText;
+    } else if (answer_method == "description") {
+        //↓変数answer_fieldにテキストボックスの内容を入れる
+        answer_field = document.getElementById("country_name_input_field").value;
+    } else {
+        console.error("エラー");
+    }
+
+
+    //↓answer_country_nameに問題の答えを代入
+    answer_kanji = data_json[country_code - 1].prefectures_name;
+    answer_kana = data_json[country_code - 1].prefectures_name_kana;
+    //↓テキストボックスが空欄なら(変数answer_fieldを使っていないのはなんか上手くいかなかったため。)わからないとして処理する
+    if (answer_field == "") {
+        do_not_know_interface.style.display = "block";
+        correct_answer_interface.style.display = "none";
+        incorrect_answer_interface.style.display = "none";
         //↓わからない問題数の変数を上げる
         do_not_know_answer_number = do_not_know_answer_number + 1;
         //↓HTMLの書き換え(answerUI)
-        document.getElementById("edit_area_blank").innerHTML = answer_country_name;
+        document.getElementById("edit_area_blank").innerHTML = answer_kanji + "(" + answer_kana + ")";
         //↓効果音チェックボタンがチェックされてるなら、効果音を鳴らす
-        if(sound_effect_button.checked){document.getElementById("incorrect").play();}
+        if (sound_effect_button.checked) { document.getElementById("incorrect").play(); }
         //↓わからない・不正解問題の国名の配列に正しい国名を挿入(<br>タグもいれてる)
-        incorrect_answer_country.unshift(answer_country_name+"<br>");
+        incorrect_answer_country.unshift(answer_kanji + "(" + answer_kana + ")" + "<br>");
         //↓次の問題を出す
         nth_question = nth_question + 1;
         start();
-    }else{
-        //↓配列arraySplitに変数answer_fieldの内容を1文字ずつ代入する
-        let arraySplit = answer_field.split("");
-        swal_boot = false;
-        //↓変数answer_fieldに入力された文字の数だけ繰り返す
-        for (let i = 0; i < arraySplit.length; i++) {
-            //↓変数cに配列arraySplitを1文字ずつ代入する
-            var cc = arraySplit.slice(i, i+1);
-            //↓もし漢字またはカタカナなら※String(cc)は文字列に変換してる
-            if(String(cc).match(/^([\u{3005}\u{3007}\u{303b}\u{3400}-\u{9FFF}\u{F900}-\u{FAFF}\u{20000}-\u{2FFFF}][\u{E0100}-\u{E01EF}\u{FE00}-\u{FE02}]?)+$/mu) || String(cc).match(/^[\u{3000}-\u{301C}\u{30A1}-\u{30F6}\u{30FB}-\u{30FE}]+$/mu)){
-            }else{
-                swal_boot = true;
-            }
+    } else {
+
+        let hiragana_decision = /[\u{3041}-\u{3093}\u{309B}-\u{309E}]/mu; //ひらがな判定
+        let kanji_decision = /([\u{3005}\u{3007}\u{303b}\u{3400}-\u{9FFF}\u{F900}-\u{FAFF}\u{20000}-\u{2FFFF}][\u{E0100}-\u{E01EF}\u{FE00}-\u{FE02}]?)/mu; //漢字判定
+        if (hiragana_decision.test(answer_field) == false && kanji_decision.test(answer_field) == false) {
+            //漢字とひらがなを両方含まないなら
+            swal_boot = true;
+        } else if (hiragana_decision.test(answer_field) == true && kanji_decision.test(answer_field) == true) {
+            //漢字とひらがなを両方含むなら
+            swal_boot = true;
+        } else {
+            swal_boot = false;
         }
+
         //↓もし漢字またはカタカナでないなら
-        if(swal_boot == false){
-            do_not_know_interface.style.display ="none";
-                if(answer_field == answer_country_name){
-                    //正解だったら
-                    correct_answer_interface.style.display ="block";
-                    incorrect_answer_interface.style.display ="none";
-                    incorrect_answer_interface.style.visibility ="hidden";
-                    //↓正解数の変数を上げる
-                    correct_answer_number = correct_answer_number + 1;
-                    //↓効果音チェックボタンがチェックされてるなら、効果音を鳴らす
-                    if(sound_effect_button.checked){document.getElementById("correct").play();}
-                    //↓次の問題を出す
-                    nth_question = nth_question + 1;
-                    start();
-                }else{
-                    //不正解だったら
-                    correct_answer_interface.style.display ="none";
-                    incorrect_answer_interface.style.display ="block";
-                    incorrect_answer_interface.style.visibility ="visible";
-                    //↓不正解数の変数を上げる
-                    incorrect_answer_number = incorrect_answer_number + 1;
-                    //↓テキストの内容を変更する
-                    document.getElementById("edit_area_incorrect").textContent = answer_country_name;
-                    //↓効果音チェックボタンがチェックされてるなら、効果音を鳴らす
-                    if(sound_effect_button.checked){document.getElementById("incorrect").play();}
-                    //↓わからない・不正解問題の国名の配列に正しい国名を挿入(<br>タグもいれてる)
-                    incorrect_answer_country.unshift(answer_country_name+"<br>");
-                    //↓次の問題を出す
-                    nth_question = nth_question + 1;
-                    start();
-                }
-        }else{
+        if (swal_boot == false) {
+            do_not_know_interface.style.display = "none";
+            if (answer_field == answer_kanji || answer_field == answer_kana) {
+                //正解だったら
+                correct_answer_interface.style.display = "block";
+                incorrect_answer_interface.style.display = "none";
+                incorrect_answer_interface.style.visibility = "hidden";
+                //↓正解数の変数を上げる
+                correct_answer_number = correct_answer_number + 1;
+                //↓効果音チェックボタンがチェックされてるなら、効果音を鳴らす
+                if (sound_effect_button.checked) { document.getElementById("correct").play(); }
+                //↓次の問題を出す
+                nth_question = nth_question + 1;
+                start();
+            } else {
+                //不正解だったら
+                correct_answer_interface.style.display = "none";
+                incorrect_answer_interface.style.display = "block";
+                incorrect_answer_interface.style.visibility = "visible";
+                //↓不正解数の変数を上げる
+                incorrect_answer_number = incorrect_answer_number + 1;
+                //↓テキストの内容を変更する
+                document.getElementById("edit_area_incorrect").textContent = answer_kanji + "(" + answer_kana + ")";
+                //↓効果音チェックボタンがチェックされてるなら、効果音を鳴らす
+                if (sound_effect_button.checked) { document.getElementById("incorrect").play(); }
+                //↓わからない・不正解問題の国名の配列に正しい国名を挿入(<br>タグもいれてる)
+                incorrect_answer_country.unshift(answer_kanji + "(" + answer_kana + ")" + "<br>");
+                //↓次の問題を出す
+                nth_question = nth_question + 1;
+                start();
+            }
+        } else {
             //↓テキストボックスの選択解除
             document.getElementById("country_name_input_field").blur();
-            swal("「カタカナ」または「漢字」で答えなさい");
+            swal("「ひらがな」または「漢字」で答えなさい");
         }
     }
 }
@@ -858,49 +399,25 @@ function answer_button_click(){
 
 //↓《わからないボタン》が押されたら
 function do_not_know_button() {
+    for (let i = 0; data_json[country_code - 1].svg_id.length > i; i++) {
+        document.getElementById(data_json[country_code - 1].svg_id[i]).style.fill = japan_map_svg_fill; //緑色にリセットする
+    }
     const sound_effect_button = document.getElementById("sound_effect_button");
     //空欄だったら
-    do_not_know_interface.style.display ="block";
-    correct_answer_interface.style.display ="none";
-    incorrect_answer_interface.style.display ="none";
+    do_not_know_interface.style.display = "block";
+    correct_answer_interface.style.display = "none";
+    incorrect_answer_interface.style.display = "none";
     //↓わからない問題数の変数を上げる
     do_not_know_answer_number = do_not_know_answer_number + 1;
+    //↓answer_country_nameに問題の答えを代入
+    answer_kanji = data_json[country_code - 1].prefectures_name;
+    answer_kana = data_json[country_code - 1].prefectures_name_kana;
     //↓テキストの内容を変更する
-    document.getElementById("edit_area_blank").innerHTML = answer_country_name;
+    document.getElementById("edit_area_blank").innerHTML = answer_kanji + "(" + answer_kana + ")";
     //↓効果音チェックボタンがチェックされてるなら、効果音を鳴らす
-    if(sound_effect_button.checked){document.getElementById("incorrect").play();}
+    if (sound_effect_button.checked) { document.getElementById("incorrect").play(); }
     //↓わからない・不正解問題の国名の配列に正しい国名を挿入(<br>タグもいれてる)
-    incorrect_answer_country.unshift(answer_country_name+"<br>");
+    incorrect_answer_country.unshift(answer_kanji + "(" + answer_kana + ")" + "<br>");
     nth_question = nth_question + 1;
     start();
-}
-
-
-
-//↓《出題国リストボタン》が押されたら
-function country_list(){
-    const country = document.getElementById("country");
-    const countrylist = document.getElementById("countrylist");
-    //↓国リストを表示してよいか(出題中でないか)
-    if(country_list_display == true){
-        if(countrylist.style.display=="block"){
-            countrylist.style.display ="none";
-            country.style.display ="none";
-            document.getElementById("country_list_arrow").className = "fas fa-chevron-down";
-        }else{
-            countrylist.style.display ="block";
-            country.style.display ="none";
-            document.getElementById("country_list_arrow").className = "fas fa-chevron-up";
-        }
-    }else{
-        countrylist.style.display ="none";
-        //document.getElementById("country_list_arrow").className = "fas fa-chevron-down";
-        if(country.style.display=="block"){
-            country.style.display ="none";
-            document.getElementById("country_list_arrow").className = "fas fa-chevron-down";
-        }else{
-            country.style.display ="block";
-            document.getElementById("country_list_arrow").className = "fas fa-chevron-up";
-        }
-    }
 }

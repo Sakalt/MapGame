@@ -1,0 +1,378 @@
+[
+  {
+    "prefectures_code": "1",
+    "prefectures_name": "北海道",
+    "prefectures_name_kana": "ほっかいどう",
+    "prefectural_office_location_name": "札幌",
+    "prefectural_office_location_name_kana": "さっぽろ",
+    "svg_id": ["HOPPOURYOUDO", "HOKKAIDO"]
+  },
+  {
+    "prefectures_code": "2",
+    "prefectures_name": "青森県",
+    "prefectures_name_kana": "あおもりけん",
+    "prefectural_office_location_name": "青森",
+    "prefectural_office_location_name_kana": "あおもり",
+    "svg_id": ["AOMORI"]
+  },
+  {
+    "prefectures_code": "3",
+    "prefectures_name": "岩手県",
+    "prefectures_name_kana": "いわてけん",
+    "prefectural_office_location_name": "盛岡",
+    "prefectural_office_location_name_kana": "もりおか",
+    "svg_id": ["IWATE"]
+  },
+  {
+    "prefectures_code": "4",
+    "prefectures_name": "宮城県",
+    "prefectures_name_kana": "みやぎけん",
+    "prefectural_office_location_name": "仙台",
+    "prefectural_office_location_name_kana": "せんだい",
+    "svg_id": ["MIYAGI"]
+  },
+  {
+    "prefectures_code": "5",
+    "prefectures_name": "秋田県",
+    "prefectures_name_kana": "あきたけん",
+    "prefectural_office_location_name": "秋田",
+    "prefectural_office_location_name_kana": "あきた",
+    "svg_id": ["AKITA"]
+  },
+  {
+    "prefectures_code": "6",
+    "prefectures_name": "山形県",
+    "prefectures_name_kana": "やまがたけん",
+    "prefectural_office_location_name": "山形",
+    "prefectural_office_location_name_kana": "やまがた",
+    "svg_id": ["YAMAGATA"]
+  },
+  {
+    "prefectures_code": "7",
+    "prefectures_name": "福島県",
+    "prefectures_name_kana": "ふくしまけん",
+    "prefectural_office_location_name": "福島",
+    "prefectural_office_location_name_kana": "ふくしま",
+    "svg_id": ["FUKUSHIMA"]
+  },
+  {
+    "prefectures_code": "8",
+    "prefectures_name": "茨城県",
+    "prefectures_name_kana": "いばらきけん",
+    "prefectural_office_location_name": "水戸",
+    "prefectural_office_location_name_kana": "みと",
+    "svg_id": ["IBARAKI"]
+  },
+  {
+    "prefectures_code": "9",
+    "prefectures_name": "栃木県",
+    "prefectures_name_kana": "とちぎけん",
+    "prefectural_office_location_name": "宇都宮",
+    "prefectural_office_location_name_kana": "うつのみや",
+    "svg_id": ["TOCHIGI"]
+  },
+  {
+    "prefectures_code": "10",
+    "prefectures_name": "群馬県",
+    "prefectures_name_kana": "ぐんまけん",
+    "prefectural_office_location_name": "前橋",
+    "prefectural_office_location_name_kana": "まえばし",
+    "svg_id": ["GUNMA"]
+  },
+  {
+    "prefectures_code": "11",
+    "prefectures_name": "埼玉県",
+    "prefectures_name_kana": "さいたまけん",
+    "prefectural_office_location_name": "さいたま",
+    "prefectural_office_location_name_kana": "さいたま",
+    "svg_id": ["SAITAMA"]
+  },
+  {
+    "prefectures_code": "12",
+    "prefectures_name": "千葉県",
+    "prefectures_name_kana": "ちばけん",
+    "prefectural_office_location_name": "千葉",
+    "prefectural_office_location_name_kana": "ちば",
+    "svg_id": ["CHIBA"]
+  },
+  {
+    "prefectures_code": "13",
+    "prefectures_name": "東京都",
+    "prefectures_name_kana": "とうきょうと",
+    "prefectural_office_location_name": "東京",
+    "prefectural_office_location_name_kana": "とうきょう",
+    "svg_id": ["TOKYO", "TOKYO(ISLANDS)"]
+  },
+  {
+    "prefectures_code": "14",
+    "prefectures_name": "神奈川県",
+    "prefectures_name_kana": "かながわけん",
+    "prefectural_office_location_name": "横浜",
+    "prefectural_office_location_name_kana": "よこはま",
+    "svg_id": ["KANAGAWA"]
+  },
+  {
+    "prefectures_code": "15",
+    "prefectures_name": "新潟県",
+    "prefectures_name_kana": "にいがたけん",
+    "prefectural_office_location_name": "新潟",
+    "prefectural_office_location_name_kana": "にいがた",
+    "svg_id": ["NIIGATA"]
+  },
+  {
+    "prefectures_code": "16",
+    "prefectures_name": "富山県",
+    "prefectures_name_kana": "とやまけん",
+    "prefectural_office_location_name": "富山",
+    "prefectural_office_location_name_kana": "とやま",
+    "svg_id": ["TOYAMA"]
+  },
+  {
+    "prefectures_code": "17",
+    "prefectures_name": "石川県",
+    "prefectures_name_kana": "いしかわけん",
+    "prefectural_office_location_name": "金沢",
+    "prefectural_office_location_name_kana": "かなざわ",
+    "svg_id": ["ISHIKAWA"]
+  },
+  {
+    "prefectures_code": "18",
+    "prefectures_name": "福井県",
+    "prefectures_name_kana": "ふくいけん",
+    "prefectural_office_location_name": "福井",
+    "prefectural_office_location_name_kana": "ふくい",
+    "svg_id": ["HUKUI"]
+  },
+  {
+    "prefectures_code": "19",
+    "prefectures_name": "山梨県",
+    "prefectures_name_kana": "やまなしけん",
+    "prefectural_office_location_name": "甲府",
+    "prefectural_office_location_name_kana": "こうふ",
+    "svg_id": ["YAMANASHI"]
+  },
+  {
+    "prefectures_code": "20",
+    "prefectures_name": "長野県",
+    "prefectures_name_kana": "ながのけん",
+    "prefectural_office_location_name": "長野",
+    "prefectural_office_location_name_kana": "ながの",
+    "svg_id": ["NAGANO"]
+  },
+  {
+    "prefectures_code": "21",
+    "prefectures_name": "岐阜県",
+    "prefectures_name_kana": "ぎふけん",
+    "prefectural_office_location_name": "岐阜",
+    "prefectural_office_location_name_kana": "ぎふ",
+    "svg_id": ["GUFU"]
+  },
+  {
+    "prefectures_code": "22",
+    "prefectures_name": "静岡県",
+    "prefectures_name_kana": "しずおかけん",
+    "prefectural_office_location_name": "静岡",
+    "prefectural_office_location_name_kana": "しずおか",
+    "svg_id": ["SIZUOKA"]
+  },
+  {
+    "prefectures_code": "23",
+    "prefectures_name": "愛知県",
+    "prefectures_name_kana": "あいちけん",
+    "prefectural_office_location_name": "名古屋",
+    "prefectural_office_location_name_kana": "なごや",
+    "svg_id": ["AICHI"]
+  },
+  {
+    "prefectures_code": "24",
+    "prefectures_name": "三重県",
+    "prefectures_name_kana": "みえけん",
+    "prefectural_office_location_name": "津",
+    "prefectural_office_location_name_kana": "つ",
+    "svg_id": ["MIE"]
+  },
+  {
+    "prefectures_code": "25",
+    "prefectures_name": "滋賀県",
+    "prefectures_name_kana": "しがけん",
+    "prefectural_office_location_name": "大津",
+    "prefectural_office_location_name_kana": "おおつ",
+    "svg_id": ["SHIGA"]
+  },
+  {
+    "prefectures_code": "26",
+    "prefectures_name": "京都府",
+    "prefectures_name_kana": "きょうとふ",
+    "prefectural_office_location_name": "京都",
+    "prefectural_office_location_name_kana": "きょうと",
+    "svg_id": ["KYOTO"]
+  },
+  {
+    "prefectures_code": "27",
+    "prefectures_name": "大阪府",
+    "prefectures_name_kana": "おおさかふ",
+    "prefectural_office_location_name": "大阪",
+    "prefectural_office_location_name_kana": "おおさか",
+    "svg_id": ["OSAKA"]
+  },
+  {
+    "prefectures_code": "28",
+    "prefectures_name": "兵庫県",
+    "prefectures_name_kana": "ひょうごけん",
+    "prefectural_office_location_name": "神戸",
+    "prefectural_office_location_name_kana": "こうべ",
+    "svg_id": ["HYOGO"]
+  },
+  {
+    "prefectures_code": "29",
+    "prefectures_name": "奈良県",
+    "prefectures_name_kana": "ならけん",
+    "prefectural_office_location_name": "奈良",
+    "prefectural_office_location_name_kana": "なら",
+    "svg_id": ["NARA"]
+  },
+  {
+    "prefectures_code": "30",
+    "prefectures_name": "和歌山県",
+    "prefectures_name_kana": "わかやまけん",
+    "prefectural_office_location_name": "和歌山",
+    "prefectural_office_location_name_kana": "わかやま",
+    "svg_id": ["WAKAYAMA"]
+  },
+  {
+    "prefectures_code": "31",
+    "prefectures_name": "鳥取県",
+    "prefectures_name_kana": "とっとりけん",
+    "prefectural_office_location_name": "鳥取",
+    "prefectural_office_location_name_kana": "とっとり",
+    "svg_id": ["TOTTORI"]
+  },
+  {
+    "prefectures_code": "32",
+    "prefectures_name": "島根県",
+    "prefectures_name_kana": "しまねけん",
+    "prefectural_office_location_name": "松江",
+    "prefectural_office_location_name_kana": "まつえ",
+    "svg_id": ["SHIMANE"]
+  },
+  {
+    "prefectures_code": "33",
+    "prefectures_name": "岡山県",
+    "prefectures_name_kana": "おかやまけん",
+    "prefectural_office_location_name": "岡山",
+    "prefectural_office_location_name_kana": "おかやま",
+    "svg_id": ["OKAYAMA"]
+  },
+  {
+    "prefectures_code": "34",
+    "prefectures_name": "広島県",
+    "prefectures_name_kana": "ひろしまけん",
+    "prefectural_office_location_name": "広島",
+    "prefectural_office_location_name_kana": "ひろしま",
+    "svg_id": ["HIROSHIMA"]
+  },
+  {
+    "prefectures_code": "35",
+    "prefectures_name": "山口県",
+    "prefectures_name_kana": "やまぐちけん",
+    "prefectural_office_location_name": "山口",
+    "prefectural_office_location_name_kana": "やまぐち",
+    "svg_id": ["YAMAGUCHI"]
+  },
+  {
+    "prefectures_code": "36",
+    "prefectures_name": "徳島県",
+    "prefectures_name_kana": "とくしまけん",
+    "prefectural_office_location_name": "徳島",
+    "prefectural_office_location_name_kana": "とくしま",
+    "svg_id": ["TOKUSHIMA"]
+  },
+  {
+    "prefectures_code": "37",
+    "prefectures_name": "香川県",
+    "prefectures_name_kana": "かがわけん",
+    "prefectural_office_location_name": "高松",
+    "prefectural_office_location_name_kana": "たかまつ",
+    "svg_id": ["KAGAWA"]
+  },
+  {
+    "prefectures_code": "38",
+    "prefectures_name": "愛媛県",
+    "prefectures_name_kana": "えひめけん",
+    "prefectural_office_location_name": "松山",
+    "prefectural_office_location_name_kana": "まつやま",
+    "svg_id": ["EHIME"]
+  },
+  {
+    "prefectures_code": "39",
+    "prefectures_name": "高知県",
+    "prefectures_name_kana": "こうちけん",
+    "prefectural_office_location_name": "高知",
+    "prefectural_office_location_name_kana": "こうち",
+    "svg_id": ["KOUCHI"]
+  },
+  {
+    "prefectures_code": "40",
+    "prefectures_name": "福岡県",
+    "prefectures_name_kana": "ふくおかけん",
+    "prefectural_office_location_name": "福岡",
+    "prefectural_office_location_name_kana": "ふくおか",
+    "svg_id": ["FUKUOKA"]
+  },
+  {
+    "prefectures_code": "41",
+    "prefectures_name": "佐賀県",
+    "prefectures_name_kana": "さがけん",
+    "prefectural_office_location_name": "佐賀",
+    "prefectural_office_location_name_kana": "さが",
+    "svg_id": ["SAGA"]
+  },
+  {
+    "prefectures_code": "42",
+    "prefectures_name": "長崎県",
+    "prefectures_name_kana": "ながさきけん",
+    "prefectural_office_location_name": "長崎",
+    "prefectural_office_location_name_kana": "ながさき",
+    "svg_id": ["NAGASAKI"]
+  },
+  {
+    "prefectures_code": "43",
+    "prefectures_name": "熊本県",
+    "prefectures_name_kana": "くまもとけん",
+    "prefectural_office_location_name": "熊本",
+    "prefectural_office_location_name_kana": "くまもと",
+    "svg_id": ["KUMAMOTO"]
+  },
+  {
+    "prefectures_code": "44",
+    "prefectures_name": "大分県",
+    "prefectures_name_kana": "おおいたけん",
+    "prefectural_office_location_name": "大分",
+    "prefectural_office_location_name_kana": "おおいた",
+    "svg_id": ["OOITA"]
+  },
+  {
+    "prefectures_code": "45",
+    "prefectures_name": "宮崎県",
+    "prefectures_name_kana": "みやざきけん",
+    "prefectural_office_location_name": "宮崎",
+    "prefectural_office_location_name_kana": "みやざき",
+    "svg_id": ["MIYAZAKI"]
+  },
+  {
+    "prefectures_code": "46",
+    "prefectures_name": "鹿児島県",
+    "prefectures_name_kana": "かごしまけん",
+    "prefectural_office_location_name": "鹿児島",
+    "prefectural_office_location_name_kana": "かごしま",
+    "svg_id": ["KAGOSHIMA", "KAGOSHIMA_ISOLATED_ISLANDS"]
+  },
+  {
+    "prefectures_code": "47",
+    "prefectures_name": "沖縄県",
+    "prefectures_name_kana": "おきなわけん",
+    "prefectural_office_location_name": "那覇",
+    "prefectural_office_location_name_kana": "なは",
+    "svg_id": ["OKINAWA"]
+  }
+]

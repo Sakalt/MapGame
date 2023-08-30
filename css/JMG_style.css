@@ -1,174 +1,336 @@
 @charset "utf-8";
 
 /*google fontsの読み込み*/
-@import url('https://fonts.googleapis.com/css?family=Poiret+One&display=swap');
 
+@import url('https://fonts.googleapis.com/css?family=Poiret+One&display=swap');
 * {
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
 }
-body,html {
+
+body,
+html {
     width: 100%;
     height: 100%;
     font-size: 23px;
 }
+
 body {
     margin: 0px;
     padding: 0px;
-    color: #000;
-    font-family: "Helvetica Neue", Arial,"Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
-    background: #F4F5F7;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+    background: #343434;
     -webkit-text-size-adjust: none;
 }
-h1,h2,h3,h4,h5,p,ul,ol,li,dl,dt,dd,form,figure,form,input,textarea {
-    margin: 0px;
-    padding: 0px;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+form,
+figure,
+form,
+input,
+textarea {
     font-size: 1rem;
-    color: #000;
     font-weight: normal;
-    letter-spacing: normal;/*字間*/
-    line-height: normal;/*行間*/
+    letter-spacing: normal;
+    /*字間*/
+    line-height: normal;
+    /*行間*/
 }
-ul {list-style-type: none;}
+
+ul {
+    list-style-type: none;
+}
+
 img {
     border: none;
     width: 100%;
     height: auto;
     vertical-align: middle;
 }
-table{
-    border-collapse:collapse;
+
+table {
+    border-collapse: collapse;
     font-size: 100%;
     border-spacing: 0;
 }
 
-/*リンク（全般）設定
----------------------------------------------------------------------------*/
 a {
-    color: #000;
-    transition: 0.4s;/*アニメーションが完了するまでにかかる時間*/
+    transition: 0.4s;
+    /*アニメーションが完了するまでにかかる時間*/
     text-decoration: underline;
-
 }
+
 a:hover {
     color: #FF0000;
-    text-decoration: none;/*下線を消す*/
+    text-decoration: none;
+    /*下線を消す*/
 }
 
-/*container。サイト全体を囲むブロック
----------------------------------------------------------------------------*/
-/*containerブロック共通*/
 #container {
-    position: fixed;
     width: 100%;
-    height: 100%;
+    height: 100svh;
+    /*100vhだとスクロールバー分がはみ出る*/
 }
 
-/*contentsブロック
----------------------------------------------------------------------------*/
 #contents {
     height: 100%;
     width: 100%;
 }
-/*mainブロック
----------------------------------------------------------------------------*/
+
+
 /*アニメーション設定------------------------*/
+
 @keyframes main {
-/*0コマ目*/
-0% {
-    opacity: 0;
-    top: 0px;
-}
-/*100コマ目*/
-100% {
-    opacity: 1;
-    top: 0px;
-}
-}
-/*mainブロック*/
-#main {
-    padding: 10px 15% 0 15%;        /*上、右、下、左へのブロック内の余白*/
-    height: 100%;                /*高さ*/
-    animation-duration: 0.5S;    /*アニメーションの実行時間。秒。*/
-    animation-fill-mode: both;    /*アニメーションの待機中は最初のキーフレームを、完了後は最後のキーフレームを維持する*/
-    animation-name: main;        /*上のアニメーション設定で使っているkeyframesの名前。contents。*/
-    animation-delay: 0.8s;        /*アニメーションを遅れて開始させる指定。0.5sは0.5秒の事。*/
-    position: relative;
-}
-/*linkブロック*/
-#link {
-    margin: 0px;
-    padding: 0px;
-}
-/*テキストの設定
----------------------------------------------------------------------------*/
-/*h1タグ*/
-#main h1 {
-    color: #000;     /* 文字色指定 */
-    line-height: 1.8rem;
-}
-/*h1タグに文字の下に3pxの線を追加*/
-#main h1.title {
-    text-decoration:underline solid red;/*テキストの下線*/
-    font-weight: bold;/*太字*/
-    text-decoration: block;
-}
-/*brタグ*/
-#main br {
-    width: 10px;
-    padding: 0px;
-    margin: 0px;
-    line-height: 10px;
-    font-size: 10px;
+    /*0コマ目*/
+    0% {
+        opacity: 0;
+        top: 0px;
+    }
+    /*100コマ目*/
+    100% {
+        opacity: 1;
+        top: 0px;
+    }
 }
 
-/*ロゴ画像のレスポンシブ対応*/
-/*910以上*/
-@media screen and (min-width: 1000px){.logo  {width: 40%;}}
-/*910以上*/
-@media screen and (min-width: 701px){.logo  {width: 60%;}}
-/*980以下*/
-@media screen and (max-width: 700px){.logo  {width: 100%;}}
+
+/*mainブロック*/
+
+#main {
+    width: 100%;
+    height: 100%;
+    animation-duration: 0.5S;
+    /*アニメーションの実行時間。秒。*/
+    animation-fill-mode: both;
+    /*アニメーションの待機中は最初のキーフレームを、完了後は最後のキーフレームを維持する*/
+    animation-name: main;
+    /*上のアニメーション設定で使っているkeyframesの名前。contents。*/
+    animation-delay: 0.8s;
+    /*アニメーションを遅れて開始させる指定。0.5sは0.5秒の事。*/
+    position: relative;
+}
+
+#logo {
+    grid-column: 1/3;
+    max-width: 100%;
+    max-height: 3rem;
+    object-fit: contain;
+}
+
+#contents_main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#ui {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#setting {
+    display: grid;
+    grid-template-columns: 4rem auto;
+    grid-template-columns: 4rem calc(100% - 4.5rem);
+    grid-template-rows: auto auto auto auto;
+    gap: 0.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 60%;
+    height: 20rem;
+    user-select: none;
+    background-color: #ecf4ff;
+    color: #000;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+}
+
+.setting_label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-weight: 900;
+}
+
+#svg_border {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#japan_map_svg {
+    max-width: 100%;
+    max-height: 100%;
+    /* transform-origin: 50% 100% 0;
+    transform: rotate(30deg); */
+}
+
+.square {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+}
+
+#control_panel {
+    position: absolute;
+    bottom: 3rem;
+    right: 0;
+}
+
+#answerUI {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+
+.answer_method_form,
+.question_number_form {
+    display: inline-flex;
+    align-items: center;
+}
+
+.selection_label {
+    background: #afdaff;
+}
+
+.selection_label:hover {
+    background-color: #73baf7;
+}
+
+input[type=radio]:checked+label {
+    background: #0986F7;
+    /* マウス選択時の背景色を指定する */
+    color: #ffffff;
+    /* マウス選択時のフォント色を指定する */
+}
+
+input[type=radio] {
+    display: none;
+    /* ラジオボタンを非表示にする */
+}
+
+input[type="radio"] {}
+
+label {
+    float: left;
+    /* 要素の左寄せ・回り込を指定する */
+    margin: 0 5px;
+    /* ボックス外側の余白を指定する */
+    width: 3rem;
+    /* ボックスの横幅を指定する */
+    text-align: center;
+    /* テキストのセンタリングを指定する */
+    cursor: pointer;
+    /* マウスカーソルの形（リンクカーソル）を指定する */
+    /* ボックスの境界線を実線で指定する */
+    border-radius: 5px;
+    /* 角丸を指定する */
+}
+
+.answer_method_button {
+    width: 11rem;
+}
 
 span {
     color: #fff;
 }
+
+
 /*正解*/
+
 #correct_answer_interface {
-    color: #fff;/*文字色*/
-    background: #0392ce;/*背景色*/
-    padding: 0.1rem;/*文字まわり（上下左右）の余白*/
-    text-align: center;/*文字中央寄せ*/
-    font-weight: bold;/*太字*/
-}
-/*不正解*/
-#incorrect_answer_interface {
-    color: #fff;/*文字色*/
-    background: #EF454A;/*背景色*/
-    padding: 0.1rem;/*文字まわり（上下左右）の余白*/
-    text-align: center;/*文字中央寄せ*/
-    font-weight: bold;/*太字*/
-}
-/*わからない*/
-#do_not_know_interface {
-    color: #fff;/*文字色*/
-    background: #EF454A;/*背景色*/
-    padding: 0.1rem;/*文字まわり（上下左右）の余白*/
-    text-align: center;/*文字中央寄せ*/
-    font-weight: bold;/*太字*/
+    color: #fff;
+    /*文字色*/
+    background: #0392ce;
+    /*背景色*/
+    padding: 0.1rem;
+    /*文字まわり（上下左右）の余白*/
+    text-align: center;
+    /*文字中央寄せ*/
+    font-weight: bold;
+    /*太字*/
 }
 
+
+/*不正解*/
+
+#incorrect_answer_interface {
+    color: #fff;
+    /*文字色*/
+    background: #EF454A;
+    /*背景色*/
+    padding: 0.1rem;
+    /*文字まわり（上下左右）の余白*/
+    text-align: center;
+    /*文字中央寄せ*/
+    font-weight: bold;
+    /*太字*/
+}
+
+
+/*わからない*/
+
+#do_not_know_interface {
+    color: #fff;
+    /*文字色*/
+    background: #EF454A;
+    /*背景色*/
+    text-align: center;
+    /*文字中央寄せ*/
+    font-weight: bold;
+    /*太字*/
+}
+
+
 /*hrタグ-灰色の横線に使用*/
+
 hr {
     margin: 0.7rem;
     color: #808080;
 }
 
+
 /*ボタンデザイン*/
+
+#button_start {
+    width: 100%;
+    background-color: #0056eb;
+    grid-column: 1/3;
+    color: #fff;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+}
+
 .btn {
     font-size: 1rem;
+    font-weight: 900;
     /*↓これがないとなぜか適応されないから消すな*/
-    font-family: "Helvetica Neue", Arial,"Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
     line-height: normal;
     display: inline-block;
     padding: 5px;
@@ -187,12 +349,15 @@ hr {
     border-radius: 0.5rem;
     border: 0px;
 }
-.btn--letter {/*回答・わからない限定(divで分離してる。高さを指定したため、上下中央揃えにするため)*/
+
+.btn--letter {
+    /*回答・わからない限定(divで分離してる。高さを指定したため、上下中央揃えにするため)*/
     color: #fff;
     font-size: 1rem;
     width: 100%;
     text-align: center;
 }
+
 .answer_button {
     background-color: #FD7E00;
     width: 3rem;
@@ -201,7 +366,14 @@ hr {
     align-items: center;
     padding: 0px;
     border: 0px;
+    justify-content: center;
 }
+
+.answer_option {
+    width: 5rem;
+    text-align: center;
+}
+
 .do_not_know_button {
     background-color: #0986f7;
     width: 6.3rem;
@@ -211,161 +383,179 @@ hr {
     padding: 0px;
     border: 0px;
 }
+
 .test3 {
     background-color: #0986f7;
     width: 100%;
-    height: 100%;
-    margin: 10px 0 30px 0;
     padding: 0.5rem 0 0.5rem 0;
+    font-weight: 900;
 }
+
 .test4 {
     background-color: #0986f7;
     display: inline-block;
 }
 
-.answer_button:hover {/*《回答ボタン》*/
+.answer_button:hover {
+    /*《回答ボタン》*/
     background-color: #ff9e3d;
     color: #fff;
 }
-.do_not_know_button:hover {/*《わからないボタン》*/
+
+.do_not_know_button:hover {
+    /*《わからないボタン》*/
     background-color: #00bfeb;
     color: #fff;
 }
-.test3:hover {/*《もう一回やるボタン》*/
+
+.test3:hover {
+    /*《もう一回やるボタン》*/
     background-color: #00bfeb;
     color: #fff;
 }
-.test4 {/*PDFを印刷*/
+
+.test4 {
+    /*PDFを印刷*/
     cursor: pointer;
     margin-top: 10px;
-    padding: 0.3rem 0.5rem;/*文字の上下 左右の余白*/
-    color: #000;/*文字色*/
-    background: #fff;/*背景色*/
-    border-left: solid 5px #FFC000;/*左線*/
-    border-bottom: solid 3px #d7d7d7;/*下線*/
+    padding: 0.3rem 0.5rem;
+    /*文字の上下 左右の余白*/
+    /*文字色*/
+    background: #fff;
+    /*背景色*/
+    border-left: solid 5px #FFC000;
+    /*左線*/
+    border-bottom: solid 3px #d7d7d7;
+    /*下線*/
     border-radius: 0;
 }
+
 .test4:hover {
     border-bottom: solid 3px #fff;
 }
+
 #country_list_button {
-    color: #000;
     border-radius: 0;
     margin: 0 0.5rem 0.5rem 0.5rem;
     padding: 0.2rem;
     border: solid 3px #808080;
     background: #fcfcfc;
-    outline: 0;/*枠線の枠線をけせる*/
+    outline: 0;
+    /*枠線の枠線をけせる*/
 }
 
+
 /*リストの矢印*/
+
 .fas {
     margin: 0 0.3rem;
 }
 
-/*不正解・間違えた問題を表示させるBOX
----------------------------------------------------------------------------*/
-/*結果画面の親要素*/
+#result {
+    width: 100%;
+}
+
 .result {
     width: 100%;
     display: grid;
-    gap: 10px;
-    grid-template-columns: 2fr 2fr 2fr;/*横列の指定*/
-    grid-template-rows: 130px 130px 130px auto;/*縦列の指定*/
-    margin: 10px 0 10px 0;
+    gap: 0.8rem;
+    grid-template-columns: 1fr 1fr;
+    /*横列の指定*/
+    grid-template-rows: calc((100svh - 12rem) / 5) calc((100svh - 12rem) / 5) calc((100svh - 12rem) / 5) calc((100svh - 12rem) / 5) calc((100svh - 12rem) / 5) 1.5rem 3rem;
+    /*縦列の指定*/
+    padding: 10px;
 }
 
 .result2 {
-    white-space: nowrap;/*自動改行の解除*/
-    background-color: #fff;
+    white-space: nowrap;
+    /*自動改行の解除*/
+    background-color: #585858;
     margin: 0;
     padding: 0.3rem;
     box-shadow: 0 2px 3px rgba(66, 66, 66, 0.7);
-    color: #000;
     font-size: 1rem;
     line-height: 1.5rem;
 }
 
 .box-big1 {
-    overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    grid-row: 1 / 4;
+    overflow: scroll;
+    /*boxからはみ出した場合、スクロール*/
+    height: 100%;
+    grid-row: 1 / 6;
 }
+
+#edit_area_comment {
+    height: 100%;
+    text-align: center;
+    background-color: #787878;
+    letter-spacing: 0.1em;
+}
+
+#edit_area_comment,
+#button_next {
+    grid-column: 1 / 3;
+}
+
+h1.title {
+    border-bottom: #0986f7 solid 2px;
+    font-weight: 900;
+    padding: 2px;
+}
+
 
 /*レスポンシブ対応*/
-@media (max-width: 1200px){
-    .result {
-        grid-template-columns: 1fr 1fr;/*横列の指定*/
-        grid-template-rows: auto auto auto auto;/*縦列の指定*/
-    }
-    .box-big1{
-        grid-row: 1 / 5;
-        height: 473px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-    .box-big2{/*スコア*/
-        height: 100px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-    .box-big3{/*レベル*/
-        height: 100px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-    .box-big4{/*正答率*/
-        height: 100px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-    .box-big5{/*正解数*/
-        height: 100px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-    .box-big6{/*不正解数*/
-        height: 100px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-    .box-big7{/*わからなかった問題数*/
-        height: 100px;
-        overflow: scroll;/*boxからはみ出した場合、スクロール*/
-    }
-}
+
+@media (max-width: 1200px) {}
+
 
 /*ul・liタグ*/
+
 .ul__bingkai {
-    margin:0.5rem;
+    margin: 0.5rem;
     background: #fcfcfc;
     padding: 0.5rem 2rem;
     border: solid 3px #808080;
 }
+
 li {
     margin: 0.4em;
     font-size: 1rem;
     line-height: normal;
 }
 
+
 /*更新情報*/
+
 .box_srcollbar {
     overflow: scroll;
-    height:auto;
-    margin:0.5rem;
-    padding: 0.5rem;/*左￤確定事項　じゃないとはみ出す*/
+    height: auto;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    /*左￤確定事項　じゃないとはみ出す*/
     border: solid 3px #808080;
     background-color: #fff;
-    color: #000;
     font-size: 1rem;
     line-height: normal;
 }
+
 .box_srcollbar bold {
     font-weight: bold;
 }
 
+
 /*出題国リストを表示させるための↑↓矢印*/
+
 .fas {
     color: #808080;
 }
 
+
 /*効果音チェックボックス*/
+
 input[type=checkbox] {
     display: none;
 }
+
 .checkbox01 {
     font-size: 1rem;
     box-sizing: border-box;
@@ -375,6 +565,7 @@ input[type=checkbox] {
     position: relative;
     width: auto;
 }
+
 .checkbox01::before {
     background: #fff;
     border: 1px solid #808080;
@@ -387,6 +578,7 @@ input[type=checkbox] {
     top: 50%;
     width: 16px;
 }
+
 .checkbox01::after {
     border-right: 3px solid #0986f7;
     border-bottom: 3px solid #0986f7;
@@ -401,21 +593,28 @@ input[type=checkbox] {
     transform: rotate(45deg);
     width: 5px;
 }
-input[type=checkbox]:checked + .checkbox01::after {
+
+input[type=checkbox]:checked+.checkbox01::after {
     opacity: 1;
 }
 
+
 /*上下中央揃え(左のボタンと高さを合わせる)にするためのdiv*/
+
 .sound_effect_button--center {
-    width: 115px;/*↓のと同じ理由*/
+    /*↓のと同じ理由*/
     /*height: 2rem;テキストボックスとボタンの高さがずれるから消す*/
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
 }
+
+
 /*---効果音チェックボックス---*/
 
+
 /*テキストボックスデザイン*/
+
 input[type="text"] {
     margin: 0 5px 0 0;
     padding: 5px;
@@ -425,36 +624,46 @@ input[type="text"] {
     float: left;
     border: 1px solid #808080;
     border-radius: 5px;
-    box-sizing: border-box;/*はみ出し対策*/
+    box-sizing: border-box;
+    /*はみ出し対策*/
     background: #fff;
 }
+
 input[type="text"]:focus {
     border: 3px solid #FD7E00;
     outline: 0;
 }
 
+
 /*地図画像の枠線を付ける*/
+
 img.border {
     width: 100%;
     border: 3px #FFC000 solid;
     box-sizing: border-box;
 }
 
-div.hid{
+div.hid {
     overflow: hidden;
 }
 
+
 /*アラートのボタンの背景色*/
+
 .swal-button {
     background-color: #0986f7;
 }
-.swal-button:not([disabled]):hover{
+
+.swal-button:not([disabled]):hover {
     background-color: #00bfeb;
     -webkit-transition: all 0.3s;
-    transition: all 0.3s;/*色の変化のアニメ*/
+    transition: all 0.3s;
+    /*色の変化のアニメ*/
 }
 
+
 /*ロード画面*/
+
 #loader-bg {
     display: none;
     position: fixed;
@@ -465,6 +674,7 @@ div.hid{
     background: #0986f7;
     z-index: 1;
 }
+
 #loader {
     display: none;
     position: fixed;
@@ -499,6 +709,7 @@ div.hid{
     -ms-transform: translateZ(0);
     transform: translateZ(0);
 }
+
 .loader:before {
     width: 50%;
     height: 50%;
@@ -509,6 +720,7 @@ div.hid{
     left: 0;
     content: '';
 }
+
 .loader:after {
     background: #0986f7;
     width: 75%;
@@ -522,6 +734,7 @@ div.hid{
     bottom: 0;
     right: 0;
 }
+
 @-webkit-keyframes load3 {
     0% {
         -webkit-transform: rotate(0deg);
@@ -532,6 +745,7 @@ div.hid{
         transform: rotate(360deg);
     }
 }
+
 @keyframes load3 {
     0% {
         -webkit-transform: rotate(0deg);
@@ -542,117 +756,77 @@ div.hid{
         transform: rotate(360deg);
     }
 }
+
+
 /*---ロード画面---*/
 
-/*テーブル*/
-table#rank {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    table-layout: fixed;
-    word-break: break-all;
-    word-wrap: break-all;
-    text-align: center;
-    padding: 2px;
-}
-#countrylist {
-    display: none;
-    border-collapse: collapse;
-    border-spacing: 0;
-    table-layout: fixed;
-    word-break: break-all;
-    word-wrap: break-all;
-    text-align: left;
-    font-size: 1rem;
-    margin: 0 0.5rem;
-}
-#country {
-    display: none;
-}
-tr,td {
-    font-size: 16px;
-}
-#countrylist tr {
-    border: solid 1px #5F5F5F;
-    padding: 5px 20px;
-}
-#countrylist td {
-    border: solid 1px #5F5F5F;
-    padding: 5px 20px;
-}
-table#rank tr {
-    border: solid 2px #5F5F5F;
-    padding: 5px;
-}
-table#rank td {
-    border: solid 2px #5F5F5F;
-    padding: 5px;
-}
-.C-asia {background-color: #FFF4F3;}
-.C-europe {background-color: #F3F7FF;}
-.C-africa {background-color: #FFF8E5;}
-.C-NA {background-color: #F2FCFC;}
-.C-SA {background-color: #F0FAF1;}
-.C-oceania {background-color: #FDF3ED;}
-/*---テーブル---*/
 
 /*1rem空ける*/
+
 .mgr-1rem {
-    margin-right : 1rem;
-    display: inline-block;
-}
-/*0.5rem空ける*/
-.mgr-05rem {
-    margin-right : 0.5rem;
+    margin-right: 1rem;
     display: inline-block;
 }
 
+
+/*0.5rem空ける*/
+
+.mgr-05rem {
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+
 /*著作権表示*/
-#copy{
+
+#copy {
     color: #6a6a6a;
     font-size: 0.8rem;
     font-style: normal;
     text-align: center;
 }
+
 .swal-text {
     color: #000;
     font-size: 1rem;
 }
+
 .swal-button {
     font-size: 1rem;
     font-weight: 400;
     padding: 5px 10px;
 }
-.fa-angle-double-right{
+
+.fa-angle-double-right {
     color: #fff;
 }
+
+
 /*container。サイト全体を囲むブロック
 ---------------------------------------------------------------------------*/
+
 #container {
     /*何してんのかわからん*/
     position: absolute;
 }
 
+
 /*画面幅1000px以下の設定
 ------------------------------------------------------------------------------------------------------------------------------------------------------*/
-@media screen and (max-width:1000px){
-    body,html {
+
+@media screen and (max-width:1000px) {
+    body,
+    html {
         font-size: 18px;
     }
-
-    #main {
-        padding-left: 3%;
-        padding-right: 3%;
+    #setting {
+        width: 90%;
     }
-
     /*テーブル*/
     #countrylist {
         border-collapse: collapse;
         table-layout: fixed;
         margin: 0;
-    }
-    tr,td {
-        font-size: 16px;
     }
     #countrylist tr {
         padding: 2px;
@@ -678,54 +852,46 @@ table#rank td {
     }
 }
 
+
 /*画面幅800px以下の設定
 ------------------------------------------------------------------------------------------------------------------------------------------------------*/
-@media screen and (max-width:800px){
 
-    body,html {
-        font-size: 14px;
-    }
-
-    /*mainブロック
-    ---------------------------------------------------------------------------*/
-    #main {
-        padding-left: 3%;
-        padding-right: 3%;
-    }
-    tr,td {
+@media screen and (max-width:800px) {
+    body,
+    html {
         font-size: 14px;
     }
 }
 
+
 /*画面幅500px以下の設定
 ------------------------------------------------------------------------------------------------------------------------------------------------------*/
-@media screen and (max-width:500px){
+
+@media screen and (max-width:500px) {
     /*テキストボックスデザイン*/
     input[type="text"] {
         width: 100%;
     }
     /*ボタン*/
-    .answer_button,.do_not_know_button {
+    .answer_button,
+    .do_not_know_button {
         margin-top: 5px;
     }
     /*効果音チェックボックス*/
     .sound_effect_button--center {
         margin-top: 5px;
     }
-}
-
-
-#svg_border{
-    width: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    background: #66f0ffff;
-}
-#svg55 {
-    width: 100%;
-    height: auto;
-}
-.square{
-    width: 100%;
-    height: 100%;
+    .result {
+        display: block;
+        /*gridからblockにして、1列表示にする*/
+    }
+    .box-big1 {
+        max-height: calc(100svh - 30rem);
+    }
+    .result2 {
+        margin: 1rem 0;
+    }
+    #button_next {
+        margin-top: 1rem;
+    }
 }
