@@ -1,18 +1,18 @@
 [
   {
     "prefectures_code": "1",
-    "prefectures_name": "北海道",
-    "prefectures_name_kana": "ほっかいどう",
-    "prefectural_office_location_name": "札幌",
-    "prefectural_office_location_name_kana": "さっぽろ",
+    "prefectures_name": "北道帝国",
+    "prefectures_name_kana": "ほくどうていこく",
+    "prefectural_office_location_name": "函館",
+    "prefectural_office_location_name_kana": "はこだて",
     "svg_id": ["HOPPOURYOUDO", "HOKKAIDO"]
   },
   {
     "prefectures_code": "2",
-    "prefectures_name": "青森県",
-    "prefectures_name_kana": "あおもりけん",
-    "prefectural_office_location_name": "青森",
-    "prefectural_office_location_name_kana": "あおもり",
+    "prefectures_name": "津軽朝",
+    "prefectures_name_kana": "つがるちょう",
+    "prefectural_office_location_name": "弘前",
+    "prefectural_office_location_name_kana": "ひろさき",
     "svg_id": ["AOMORI"]
   },
   {
@@ -49,16 +49,16 @@
   },
   {
     "prefectures_code": "7",
-    "prefectures_name": "福島県",
-    "prefectures_name_kana": "ふくしまけん",
-    "prefectural_office_location_name": "福島",
-    "prefectural_office_location_name_kana": "ふくしま",
+    "prefectures_name": "南山帝国",
+    "prefectures_name_kana": "なんざんていこく",
+    "prefectural_office_location_name": "郡山",
+    "prefectural_office_location_name_kana": "ぐんざん",
     "svg_id": ["FUKUSHIMA"]
   },
   {
     "prefectures_code": "8",
-    "prefectures_name": "茨城県",
-    "prefectures_name_kana": "いばらきけん",
+    "prefectures_name": "水戸",
+    "prefectures_name_kana": "みと",
     "prefectural_office_location_name": "水戸",
     "prefectural_office_location_name_kana": "みと",
     "svg_id": ["IBARAKI"]
@@ -73,10 +73,10 @@
   },
   {
     "prefectures_code": "10",
-    "prefectures_name": "群馬県",
-    "prefectures_name_kana": "ぐんまけん",
+    "prefectures_name": "グンマー",
+    "prefectures_name_kana": "ぐんまー",
     "prefectural_office_location_name": "前橋",
-    "prefectural_office_location_name_kana": "まえばし",
+    "prefectural_office_location_name_kana": "まぇばし",
     "svg_id": ["GUNMA"]
   },
   {
@@ -193,10 +193,10 @@
   },
   {
     "prefectures_code": "25",
-    "prefectures_name": "滋賀県",
-    "prefectures_name_kana": "しがけん",
-    "prefectural_office_location_name": "大津",
-    "prefectural_office_location_name_kana": "おおつ",
+    "prefectures_name": "滋賀・県",
+    "prefectures_name_kana": "しが・けん",
+    "prefectural_office_location_name": "乙",
+    "prefectural_office_location_name_kana": "おつ",
     "svg_id": ["SHIGA"]
   },
   {
@@ -241,10 +241,10 @@
   },
   {
     "prefectures_code": "31",
-    "prefectures_name": "鳥取県",
-    "prefectures_name_kana": "とっとりけん",
+    "prefectures_name": "鳥取国",
+    "prefectures_name_kana": "とりとりくに",
     "prefectural_office_location_name": "鳥取",
-    "prefectural_office_location_name_kana": "とっとり",
+    "prefectural_office_location_name_kana": "とりとり",
     "svg_id": ["TOTTORI"]
   },
   {
